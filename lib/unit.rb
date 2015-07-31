@@ -1,5 +1,5 @@
 require "unit/version"
+require "unit/unit"
 
 module Unit
-  # Your code goes here...
 end
