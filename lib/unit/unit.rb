@@ -46,6 +46,14 @@ module Unit
 
     end
 
+    def mass?
+      false
+    end
+
+    def volume?
+      false
+    end
+
     #Display methods
     def to_hash
       {
