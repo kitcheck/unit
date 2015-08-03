@@ -2,18 +2,23 @@ class Unit
   include Formatter
 
   attr_reader :scalar, :uom
-  def initialize(scalar, uom)
+  def initialize(scalar:, uom:, components: [])
     @scalar = BigDecimal.new(scalar)
     @uom = uom
+    @components = [components].compact.flatten
+  end
+
+  def self.from_object(object:)
+    Unit.new(scalar: object.scalar, uom: object.uom, components: [object])
   end
 
   def self.from_scalar_and_uom(scalar, uom)
-    Unit.new(scalar, uom)
+    Unit.new(scalar: scalar, uom: uom)
   end
 
   def self.from_string(string)
     scalar, uom = string.split(" ")
-    Unit.new(scalar, uom)
+    Unit.new(scalar: scalar, uom: uom)
   end
 
   def ==(other)
@@ -22,7 +27,7 @@ class Unit
 
   def +(other)
     if @uom == other.uom
-      Unit.new(@scalar + other.scalar, @uom)
+      Unit.new(scalar:(@scalar + other.scalar), uom: @uom, components: @components + other.components)
     else
       #reduce units and add
     end
@@ -30,7 +35,7 @@ class Unit
 
   def -(other)
     if @uom == other.uom
-      Unit.new(@scalar - other.scalar, @uom)
+      Unit.new(scalar:(@scalar - other.scalar), uom: @uom, components: @components + other.components)
     else
       #reduce units and subtract
     end
@@ -44,7 +49,8 @@ class Unit
   def to_hash
     {
       :scalar => @scalar,
-      :uom => @uom
+      :uom => @uom,
+      :components => @components
     }
   end
 
