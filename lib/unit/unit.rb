@@ -5,7 +5,7 @@ module Unit
 
     def initialize(scalar, uom, components = [])
       @scalar = BigDecimal.new(scalar)
-      @uom = validate_uom
+      @uom = validate_uom(uom)
       @components = [components].compact.flatten
     end
 
