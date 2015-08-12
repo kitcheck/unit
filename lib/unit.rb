@@ -1,4 +1,6 @@
 require "unit/version"
 require "unit/unit"
 require "unit/formatter"
+require "unit/mass"
+require "unit/volume"
 require "bigdecimal"
