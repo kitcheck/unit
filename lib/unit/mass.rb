@@ -1,6 +1,6 @@
 module Unit
   class Mass < Unit
-   
+
     def /(other)
       if other.is_a? Mass
         if @uom == other.uom
@@ -16,8 +16,8 @@ module Unit
         end
       elsif other.is_a? Volume
         #Implement concentration
-        
-      else 
+
+      else
         raise IncompatibleUnitsError.new("These units are incompatible")
       end
     end

@@ -84,6 +84,10 @@ module Unit
       raise "Implement in subclasses" 
     end
 
+    alias_method :add, :+
+    alias_method :subtract, :-
+    alias_method :divide, :/
+
     def scale(scale)
       if scale.is_a? Float
         scale = BigDecimal.new(scale, 10)
