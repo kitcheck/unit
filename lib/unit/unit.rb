@@ -80,6 +80,10 @@ module Unit
       end
     end
 
+    def /(other)
+      raise "Implement in subclasses" 
+    end
+
     def scale(scale)
       if scale.is_a? Float
         scale = BigDecimal.new(scale, 10)

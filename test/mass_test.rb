@@ -89,4 +89,14 @@ class MassTest < Minitest::Test
       end
     end
   end
+
+  context "dividing" do
+    context "dividing by mass" do
+      should "return divided scalers" do
+        u1 = Unit::Mass.new(1, 'mg')
+        u2 = Unit::Mass.new(2, 'mg')
+        assert_equal '0.5 mg', (u1/u2).to_s
+      end
+    end
+  end
 end

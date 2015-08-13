@@ -1,7 +1,25 @@
 module Unit
   class Mass < Unit
-    #Maps a unit of measure to it's power of 10 exponent, relative to mg
+   
+    def /(other)
+      if other.is_a? Mass
+        if @uom == other.uom
+          Mass.new((@scalar / other.scalar), @uom, @components + other.components)
+        else
+          if Unit.smallest_unit(self, other) == self
+            scaled_other = other.convert_to(self.uom)
+            Mass.new((@scalar - scaled_other.scalar), scaled_other.uom, @components + other.components)
+          else
+            scaled_self = self.convert_to(other.uom)
+            Mass.new((scaled_self.scalar - other.scalar), scaled_self.uom, @components + other.components)
+          end
+        end
+      elsif other.is_a? Volume
+        #Implement concentration
+      end
+    end
 
+    #Maps a unit of measure to it's power of 10 exponent, relative to mg
     def self.scale_hash
       {
         'mg' => 0,
