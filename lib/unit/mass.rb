@@ -16,6 +16,9 @@ module Unit
         end
       elsif other.is_a? Volume
         #Implement concentration
+        
+      else 
+        raise IncompatibleUnitsError.new("These units are incompatible")
       end
     end
 
