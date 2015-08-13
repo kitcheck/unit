@@ -42,7 +42,7 @@ module Unit
       if @uom == other.uom
         return @scalar == other.scalar
       else
-        if smallest_unit(self, other) == self
+        if Unit.smallest_unit(self, other) == self
           scaled_other = other.convert_to(self.uom)
           return @scalar == scaled_other.scalar
         else
@@ -56,12 +56,12 @@ module Unit
       if @uom == other.uom
         self.class.new((scalar + other.scalar), @uom, @components + other.components)
       else
-        if smallest_unit(self, other) == self
+        if Unit.smallest_unit(self, other) == self
           scaled_other = other.convert_to(self.uom)
-          self.class.new((@scalar + scaled_other.scalar), @uom, @components + other.components)
+          self.class.new((@scalar + scaled_other.scalar), scaled_other.uom, @components + other.components)
         else
           scaled_self = self.convert_to(other.uom)
-          self.class.new((scaled_self + other.scalar), @uom, @components + other.components)
+          self.class.new((scaled_self.scalar + other.scalar), scaled_self.uom, @components + other.components)
         end
       end
     end
@@ -70,7 +70,7 @@ module Unit
       if @uom == other.uom
         self.class.new((@scalar - other.scalar), @uom, @components + other.components)
       else
-        if smallest_unit(self, other) == self
+        if Unit.smallest_unit(self, other) == self
           scaled_other = other.convert_to(self.uom)
           self.class.new((@scalar - scaled_other.scalar), @uom, @components + other.components)
         else
@@ -87,13 +87,13 @@ module Unit
       self.class.new(@scalar * scale, @uom, @components)
     end
 
-    def smallest_unit(u1, u2)
+    def self.smallest_unit(u1, u2)
       if u1.class == u2.class
         comp_hash = u1.scale_hash
         if comp_hash[u1.uom] < comp_hash[u2.uom]
-          u1
-        else
           u2
+        else
+          u1
         end
       else
         raise IncompatibleUnitsError.new("These units are incompatible")
