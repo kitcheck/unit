@@ -37,6 +37,14 @@ class MassTest < Minitest::Test
       assert_equal 'mg', combined_unit.uom
     end
 
+    should "conver to smallest unit and subtract" do
+      u1 = Unit::Mass.new(5, 'mg')
+      u2 = Unit::Mass.new(3, 'mcg')
+      combined_unit = u1 - u2
+      assert_equal 47, combined_unit.scalar.to_f
+      assert_equal 'mcg', combined_unit.uom
+    end
+
     context "error handling" do
       should "raise on subtracting a volume from a mass" do
         u1 = Unit::Mass.new(5, 'mg')
