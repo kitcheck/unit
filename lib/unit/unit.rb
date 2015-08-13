@@ -34,7 +34,7 @@ module Unit
       if self.scale_hash.keys.include? uom
         uom
       else
-        raise IncompatibleUnitsError
+        raise IncompatibleUnitsError.new("This unit is incompatible")
       end
     end
 
@@ -86,7 +86,7 @@ module Unit
           u2
         end
       else
-        raise IncompatibleUnitsError
+        raise IncompatibleUnitsError.new("These units are incompatible")
       end
     end
 
@@ -104,7 +104,7 @@ module Unit
         #Return new unit
         self.class.new(scaled_amount, uom, @components)
       else
-        raise IncompatibleUnitsError
+        raise IncompatibleUnitsError.new("This unit is incompatible")
       end
     end
 
@@ -118,7 +118,7 @@ module Unit
 
     #Display methods
     def to_s
-      "#{@scalar} #{@uom}"
+      "#{@scalar.to_s("F")} #{@uom}"
     end
 
     def to_hash
@@ -131,8 +131,8 @@ module Unit
 
     def to_formatted_hash
       to_hash.merge!({
-        :scalar_formatted => decimal_formatted(@scalar),
-        :uom_formatted => uom_formatted(@uom)
+        :scalar_formatted => Formatter.decimal_formatted(@scalar),
+        :uom_formatted => Formatter.uom_formatted(@uom)
       })
     end
   end

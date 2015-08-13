@@ -1,5 +1,4 @@
 module Unit
-  class IncompatibleUnitsError < StandardError
-    super("This unit is incompatible")
+  class IncompatibleUnitsError < ArgumentError
   end
 end

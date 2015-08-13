@@ -1,12 +1,12 @@
 module Unit
   class Formatter
-    def decimal_formatted(decimal)
-      if decimal.present?
+    def self.decimal_formatted(decimal)
+      if !decimal.nil?
         "%g" % decimal
       end
     end
 
-    def uom_formatted(uom)
+    def self.uom_formatted(uom)
       uom.downcase.gsub(/l$/, 'L')
     end
   end
