@@ -39,7 +39,17 @@ module Unit
     end
 
     def ==(other)
-      @scalar == other.scalar && @uom == other.uom
+      if @uom == other.uom
+        return @scalar == other.scalar
+      else
+        if smallest_unit(self, other) == self
+          scaled_other = other.convert_to(self.uom)
+          return @scalar == scaled_other.scalar
+        else
+          scaled_self = self.convert_to(other.uom)
+          return scaled_self.scalar == other.scalar
+        end
+      end
     end
 
     def +(other)
