@@ -144,7 +144,7 @@ module Unit
 
     def to_formatted_hash
       to_hash.merge!({
-        :scalar_formatted => Formatter.decimal_formatted(@scalar),
+        :scalar_formatted => Formatter.scalar_formatted(@scalar),
         :uom_formatted => Formatter.uom_formatted(@uom)
       })
     end

@@ -1,6 +1,6 @@
 module Unit
   class Formatter
-    def self.decimal_formatted(decimal)
+    def self.scalar_formatted(decimal)
       if !decimal.nil?
         "%g" % decimal
       end
