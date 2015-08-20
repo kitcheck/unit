@@ -6,7 +6,7 @@ module Unit
         if @uom == other.uom
           Mass.new((@scalar / other.scalar), @uom, @components + other.components)
         else
-          if Unit.smallest_unit(self, other) == self
+          if self < other
             scaled_other = other.convert_to(self.uom)
             Mass.new((@scalar - scaled_other.scalar), scaled_other.uom, @components + other.components)
           else
@@ -25,8 +25,8 @@ module Unit
     #Maps a unit of measure to it's power of 10 exponent, relative to mg
     def self.scale_hash
       {
+        'mcg' => -3,
         'mg' => 0,
-        'mcg' => 1,
         'g' => 3
       }
     end

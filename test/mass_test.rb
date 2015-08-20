@@ -14,7 +14,7 @@ class MassTest < Minitest::Test
       u1 = Unit::Mass.new(5, 'mg')
       u2 = Unit::Mass.new(3, 'mcg')
       combined_unit = u1 + u2
-      assert_equal 53, combined_unit.scalar.to_f
+      assert_equal 5003, combined_unit.scalar.to_f
       assert_equal 'mcg', combined_unit.uom
     end
 
@@ -41,7 +41,7 @@ class MassTest < Minitest::Test
       u1 = Unit::Mass.new(5, 'mg')
       u2 = Unit::Mass.new(3, 'mcg')
       combined_unit = u1 - u2
-      assert_equal 47, combined_unit.scalar.to_f
+      assert_equal 4997, combined_unit.scalar.to_f
       assert_equal 'mcg', combined_unit.uom
     end
 
@@ -82,7 +82,7 @@ class MassTest < Minitest::Test
 
       context "equivalent amounts" do
         should "return true" do
-          u1 = Unit::Mass.new(10, 'mcg')
+          u1 = Unit::Mass.new(1000, 'mcg')
           u2 = Unit::Mass.new(1, 'mg')
           assert_equal true, u1 == u2
         end

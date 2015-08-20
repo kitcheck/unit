@@ -1,5 +1,6 @@
 module Unit
   class Unit
+    include Comparable
 
     attr_reader :scalar, :uom, :components
 
@@ -42,7 +43,7 @@ module Unit
       if @uom == other.uom
         return @scalar == other.scalar
       else
-        if Unit.smallest_unit(self, other) == self
+        if self < other
           scaled_other = other.convert_to(self.uom)
           return @scalar == scaled_other.scalar
         else
@@ -56,8 +57,9 @@ module Unit
       if @uom == other.uom
         self.class.new((scalar + other.scalar), @uom, @components + other.components)
       else
-        if Unit.smallest_unit(self, other) == self
+        if self < other
           scaled_other = other.convert_to(self.uom)
+          byebug
           self.class.new((@scalar + scaled_other.scalar), scaled_other.uom, @components + other.components)
         else
           scaled_self = self.convert_to(other.uom)
@@ -70,7 +72,7 @@ module Unit
       if @uom == other.uom
         self.class.new((@scalar - other.scalar), @uom, @components + other.components)
       else
-        if Unit.smallest_unit(self, other) == self
+        if self < other
           scaled_other = other.convert_to(self.uom)
           self.class.new((@scalar - scaled_other.scalar), scaled_other.uom, @components + other.components)
         else
@@ -81,7 +83,7 @@ module Unit
     end
 
     def /(other)
-      raise "Implement in subclasses" 
+      raise "Implement in subclasses"
     end
 
     alias_method :add, :+
@@ -95,17 +97,10 @@ module Unit
       self.class.new(@scalar * scale, @uom, @components)
     end
 
-    def self.smallest_unit(u1, u2)
-      if u1.class == u2.class
-        comp_hash = u1.scale_hash
-        if comp_hash[u1.uom] < comp_hash[u2.uom]
-          u2
-        else
-          u1
-        end
-      else
-        raise IncompatibleUnitsError.new("These units are incompatible")
-      end
+    def <=>(other)
+      raise IncompatibleUnitsError.new("These units are incompatible") unless self.class == other.class
+      comp_hash = self.scale_hash
+      comp_hash[self.uom] <=> comp_hash[other.uom]
     end
 
     def convert_to(uom)
@@ -117,7 +112,7 @@ module Unit
       if destination_exp
         source_exp = self.scale_hash[@uom]
         #Get difference in exponents
-        exp_diff = destination_exp - source_exp
+        exp_diff = (destination_exp - source_exp).abs
         scaled_amount = @scalar * BigDecimal.new((10**exp_diff), 10)
         #Return new unit
         self.class.new(scaled_amount, uom, @components)
