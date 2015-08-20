@@ -10,19 +10,6 @@ module Unit
       @components = [components].compact.flatten
     end
 
-    def self.from_object(object)
-      self.new(object.scalar, object.uom, [object])
-    end
-
-    def self.from_scalar_and_uom(scalar, uom)
-      self.new(scalar, uom)
-    end
-
-    def self.from_string(string)
-      scalar, uom = string.split(" ")
-      self.new(scalar, uom)
-    end
-
     def self.scale_hash
       {}
     end
