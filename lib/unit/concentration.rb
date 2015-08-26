@@ -1,20 +1,44 @@
 module Unit
   class Concentration
 
-    attr_reader :numerator, :denominator, :components
+    attr_reader :numerator, :denominator, :numerator_components, :denominator_components, :calculated_scalar, :calculated_uom
 
-    def initialize(numerator, denominator, components =[])
+    def initialize(numerator, denominator, numerator_components = [], denominator_components = [])
       @numerator = numerator#Top of line
       @denominator = denominator #Bottom of line
-      @components = components
+      @numerator_components = numerator_components
+      @denominator_components = denominator_components
     end
 
     def +(other)
       if other.is_a? Concentration
         #if denominators are the same
+        if denominator == other.denominator
         #Add numerators
+          Concentration.new(numerator + other.numerator,
+                            denominator,
+                            numerator_components + other.numerator_components,
+                            denominator_components + other.denominator_components
+                           )
+        else
         #else reduce to LCD
-        #add numerators
+          if self.denominator < other.denominator
+            reduced_other = other.reduce_to_lcd(self)
+            Concentration.new(numerator + reduced_other.numerator,
+                              denominator,
+                              numerator_components + reduced_other.numerator_components,
+                              denominator_components + other.denominator_components
+                             )
+
+          else
+            reduced_self = reduce_to_lcd(other)
+            Concentration.new(reduced_self.numerator + other.numerator,
+                              reduced_self.denominator,
+                              reduced_self.numerator_components + other.numerator_components,
+                              reduced_self.denominator_components + other.denominator_components
+                             )
+          end
+        end
       end
     end
 
@@ -34,27 +58,33 @@ module Unit
       end
     end
 
-    def combined_scalar
+    def calculated_scalar
       @numerator.scalar / @denominator.scalar
     end
 
-    def combined_uom
+    def calculated_uom
       @numerator.uom + "/" + @denominator.uom
     end
 
     def to_hash
       {
-        :scalar => combined_scalar,
-        :uom => combined_uom
+        :scalar => calculated_scalar,
+        :uom => calculated_uom
 
       }
     end
 
     def to_formatted_hash
       to_hash.merge!({
-        :scalar_formatted => Formatter.scalar_formatted(combined_scalar),
-        :uom_formatted => Formatter.uom_formatted(combined_uom)
+        :scalar_formatted => Formatter.scalar_formatted(calculated_scalar),
+        :uom_formatted => Formatter.uom_formatted(calculated_uom)
       })
+    end
+
+    private
+
+    def reduce_to_lcd(lowest_concentration)
+
     end
   end
 end
