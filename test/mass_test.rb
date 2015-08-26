@@ -99,4 +99,60 @@ class MassTest < Minitest::Test
       end
     end
   end
+
+  context "comparison" do
+    context "a == b" do
+      context "same unit" do
+        should "return 0" do
+          a = Unit::Mass.new(1, 'mg')
+          b = Unit::Mass.new(1, 'mg')
+          assert_equal 0, a <=> b
+        end
+      end
+
+      context "equivalent unit" do
+        should "return 0" do
+          a = Unit::Mass.new(1, 'mg')
+          b = Unit::Mass.new(1000, 'mcg')
+          assert_equal 0, a <=> b
+        end
+      end
+    end
+
+    context "a < b" do
+      context "same units" do
+        should "return -1" do
+          a = Unit::Mass.new(1, 'mg')
+          b = Unit::Mass.new(2, 'mg')
+          assert_equal (-1), a <=> b
+        end
+      end
+
+      context "different units" do
+        should "return -1" do
+          a = Unit::Mass.new(1, 'mcg')
+          b = Unit::Mass.new(1, 'mg')
+          assert_equal (-1), a <=> b
+        end
+      end
+    end
+
+    context "a > b" do
+      context "same units" do
+        should "return 1" do
+          a = Unit::Mass.new(2, 'mg')
+          b = Unit::Mass.new(1, 'mg')
+          assert_equal 1, a <=> b
+        end
+      end
+
+      context "different units" do
+        should "return 1" do
+          a = Unit::Mass.new(1, 'mg')
+          b = Unit::Mass.new(1, 'mcg')
+          assert_equal 1, a <=> b
+        end
+      end
+    end
+  end
 end
