@@ -1,5 +1,6 @@
 require "unit/version"
 require "unit/formatter"
+require "unit/parser"
 require "unit/unit"
 require "unit/mass"
 require "unit/volume"
@@ -10,8 +11,7 @@ require "bigdecimal"
 
 module Unit
   def self.parse(string)
-    scalar, uom = string.split(" ")
-    determine_class(uom).new(scalar, uom)
+    Parser.parse(string)
   end
 
   def self.from_object(object)
