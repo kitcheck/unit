@@ -1,13 +1,11 @@
 module Unit
   class Concentration
 
-    attr_reader :numerator, :denominator, :numerator_components, :denominator_components, :calculated_scalar, :calculated_uom
+    attr_reader :numerator, :denominator, :calculated_scalar, :calculated_uom
 
-    def initialize(numerator, denominator, numerator_components = [], denominator_components = [])
+    def initialize(numerator, denominator)
       @numerator = numerator#Top of line
       @denominator = denominator #Bottom of line
-      @numerator_components = numerator_components
-      @denominator_components = denominator_components
 
       if !numerator.is_a?(Mass) || !denominator.is_a?(Volume)
         raise "Don't be that guy"
@@ -19,22 +17,27 @@ module Unit
         #Add numerators
         con1, con2 = Concentration.equivalise(self, other)
         Concentration.new(con1.numerator + con2.numerator,
-                          con1.denominator, #This is the same for both cons because of the equivalise method
-                          con1.numerator_components + con2.numerator_components,
-                          con1.denominator_components + con2.denominator_components
+                          con1.denominator #This is the same for both cons because of the equivalise method
                          )
+      elsif other.is_a? Mass
+        Concentration.new(self.numerator + other, self.denominator)
+      elsif other.is_a? Volume
+        #Making the assumption that you're diluting
+        Concentration.new(self.numerator, self.denominator + other)
       end
     end
 
     def -(other)
       if other.is_a? Concentration
-      end
-    end
-
-    def *(other)
-      if other.is_a? Concentration
-        #multiply numerators
-        #multiply denominators
+        con1, con2 = Concentration.equivalise(self, other)
+        Concentration.new(con1.numerator - con2.numerator,
+                          con1.denominator #This is the same for both cons because of the equivalise method
+                         )
+      elsif other.is_a? Mass
+        Concentration.new(self.numerator - other, self.denominator)
+      elsif other.is_a? Volume
+        #Making the assumption that you're diluting
+        Concentration.new(self.numerator, self.denominator - other)
       end
     end
 
@@ -81,8 +84,8 @@ module Unit
       #cross multiply
       scaled_num1 = con1.numerator.scale(converted_denom2.scalar)
       scaled_num2 = con2.numerator.scale(converted_denom1.scalar)
-      new_con1 = Concentration.new(scaled_num1, combined_denom, con1.numerator_components, con1.denominator_components)
-      new_con2 = Concentration.new(scaled_num2, combined_denom, con2.numerator_components, con2.denominator_components)
+      new_con1 = Concentration.new(scaled_num1, combined_denom)
+      new_con2 = Concentration.new(scaled_num2, combined_denom)
 
       return new_con1, new_con2
     end

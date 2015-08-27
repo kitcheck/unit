@@ -5,7 +5,7 @@ module Unit
     attr_reader :scalar, :uom, :components
 
     def initialize(scalar, uom, components = [])
-      @scalar = BigDecimal.new(scalar)
+      @scalar = BigDecimal.new(scalar, 10)
       @uom = validate_uom(uom)
       @components = [components].compact.flatten
     end
