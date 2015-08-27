@@ -8,46 +8,26 @@ module Unit
       @denominator = denominator #Bottom of line
       @numerator_components = numerator_components
       @denominator_components = denominator_components
+
+      if !numerator.is_a?(Mass) || !denominator.is_a?(Volume)
+        raise "Don't be that guy"
+      end
     end
 
     def +(other)
       if other.is_a? Concentration
-        #if denominators are the same
-        if denominator == other.denominator
         #Add numerators
-          Concentration.new(numerator + other.numerator,
-                            denominator,
-                            numerator_components + other.numerator_components,
-                            denominator_components + other.denominator_components
-                           )
-        else
-        #else reduce to LCD
-          if self.denominator < other.denominator
-            reduced_other = other.reduce_to_lcd(self)
-            Concentration.new(numerator + reduced_other.numerator,
-                              denominator,
-                              numerator_components + reduced_other.numerator_components,
-                              denominator_components + other.denominator_components
-                             )
-
-          else
-            reduced_self = reduce_to_lcd(other)
-            Concentration.new(reduced_self.numerator + other.numerator,
-                              reduced_self.denominator,
-                              reduced_self.numerator_components + other.numerator_components,
-                              reduced_self.denominator_components + other.denominator_components
-                             )
-          end
-        end
+        con1, con2 = Concentration.equivalise(self, other)
+        Concentration.new(con1.numerator + con2.numerator,
+                          con1.denominator, #This is the same for both cons because of the equivalise method
+                          con1.numerator_components + con2.numerator_components,
+                          con1.denominator_components + con2.denominator_components
+                         )
       end
     end
 
     def -(other)
       if other.is_a? Concentration
-        #if denominators are the same
-        #subtract numerators
-        #else reduce to LCD
-        #subtract numerators
       end
     end
 
@@ -56,6 +36,11 @@ module Unit
         #multiply numerators
         #multiply denominators
       end
+    end
+
+    def <=>(other)
+      con1, con2 = Concentration.equivalise(self, other)
+      con1.calculated_scalar <=> con2.calculated_scalar
     end
 
     def calculated_scalar
@@ -83,8 +68,23 @@ module Unit
 
     private
 
-    def reduce_to_lcd(lowest_concentration)
+    def self.equivalise(con1, con2)
+      #if equivalent denoms, don't need to convert
+      if con1.denominator == con2.denominator
+        return con1, con2
+      end
+      #convert_denominator
+      converted_denom1, converted_denom2 = Unit.equivalise(con1.denominator, con2.denominator)
+      combined_denom = converted_denom1.class.new(converted_denom1.scalar * converted_denom2.scalar,
+                                                  converted_denom1.uom,
+                                                  converted_denom1.components + converted_denom2.components) #multiply denominators by each other
+      #cross multiply
+      scaled_num1 = con1.numerator.scale(converted_denom2.scalar)
+      scaled_num2 = con2.numerator.scale(converted_denom1.scalar)
+      new_con1 = Concentration.new(scaled_num1, combined_denom, con1.numerator_components, con1.denominator_components)
+      new_con2 = Concentration.new(scaled_num2, combined_denom, con2.numerator_components, con2.denominator_components)
 
+      return new_con1, new_con2
     end
   end
 end

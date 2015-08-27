@@ -122,6 +122,19 @@ module Unit
       Volume.scale_hash.keys.include? self.uom
     end
 
+    def self.equivalise(u1, u2)
+      raise IncompatibleUnitsError.new("These units are incompatible") unless u1.class == u2.class
+      comp_hash = u1.scale_hash
+      order_of_mag_comp = comp_hash[u1.uom] <=> comp_hash[u2.uom]
+      if order_of_mag_comp == -1
+        return u1, u2.convert_to(u2.uom)
+      elsif order_of_mag_comp == 0
+        return u1, u2
+      elsif order_of_mag_comp == 1
+        return u1.convert_to(u2.uom), u2
+      end
+    end
+
     #Display methods
     def to_s
       "#{@scalar.to_s("F")} #{@uom}"
