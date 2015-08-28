@@ -15,8 +15,7 @@ module Unit
           end
         end
       elsif other.is_a? Volume
-        #Implement concentration
-
+        Concentration.new(self, other)
       else
         raise IncompatibleUnitsError.new("These units are incompatible")
       end

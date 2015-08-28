@@ -5,7 +5,7 @@ module Unit
     attr_reader :scalar, :uom, :components
 
     def initialize(scalar, uom, components = [])
-      @scalar = BigDecimal.new(scalar)
+      @scalar = BigDecimal.new(scalar, 10)
       @uom = validate_uom(uom)
       @components = [components].compact.flatten
     end
@@ -36,20 +36,6 @@ module Unit
         uom
       else
         raise IncompatibleUnitsError.new("This unit is incompatible")
-      end
-    end
-
-    def ==(other)
-      if @uom == other.uom
-        return @scalar == other.scalar
-      else
-        if self < other
-          scaled_other = other.convert_to(self.uom)
-          return @scalar == scaled_other.scalar
-        else
-          scaled_self = self.convert_to(other.uom)
-          return scaled_self.scalar == other.scalar
-        end
       end
     end
 
@@ -100,7 +86,14 @@ module Unit
     def <=>(other)
       raise IncompatibleUnitsError.new("These units are incompatible") unless self.class == other.class
       comp_hash = self.scale_hash
-      comp_hash[self.uom] <=> comp_hash[other.uom]
+      order_of_mag_comp = comp_hash[self.uom] <=> comp_hash[other.uom]
+      if order_of_mag_comp == -1
+        self <=> other.convert_to(self.uom)
+      elsif order_of_mag_comp == 0
+        self.scalar <=> other.scalar
+      elsif order_of_mag_comp == 1
+        self.convert_to(other.uom) <=> other
+      end
     end
 
     def convert_to(uom)
@@ -127,6 +120,19 @@ module Unit
 
     def volume?
       Volume.scale_hash.keys.include? self.uom
+    end
+
+    def self.equivalise(u1, u2)
+      raise IncompatibleUnitsError.new("These units are incompatible") unless u1.class == u2.class
+      comp_hash = u1.scale_hash
+      order_of_mag_comp = comp_hash[u1.uom] <=> comp_hash[u2.uom]
+      if order_of_mag_comp == -1
+        return u1, u2.convert_to(u2.uom)
+      elsif order_of_mag_comp == 0
+        return u1, u2
+      elsif order_of_mag_comp == 1
+        return u1.convert_to(u2.uom), u2
+      end
     end
 
     #Display methods
