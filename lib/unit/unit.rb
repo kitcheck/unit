@@ -10,19 +10,6 @@ module Unit
       @components = [components].compact.flatten
     end
 
-    def self.from_object(object)
-      self.new(object.scalar, object.uom, [object])
-    end
-
-    def self.from_scalar_and_uom(scalar, uom)
-      self.new(scalar, uom)
-    end
-
-    def self.from_string(string)
-      scalar, uom = string.split(" ")
-      self.new(scalar, uom)
-    end
-
     def self.scale_hash
       {}
     end
@@ -35,7 +22,7 @@ module Unit
       if self.scale_hash.keys.include? uom
         uom
       else
-        raise IncompatibleUnitsError.new("This unit is incompatible")
+        raise IncompatibleUnitsError.new("This unit is incompatible (#{uom})")
       end
     end
 
@@ -45,7 +32,6 @@ module Unit
       else
         if self < other
           scaled_other = other.convert_to(self.uom)
-          byebug
           self.class.new((@scalar + scaled_other.scalar), scaled_other.uom, @components + other.components)
         else
           scaled_self = self.convert_to(other.uom)
@@ -84,7 +70,7 @@ module Unit
     end
 
     def <=>(other)
-      raise IncompatibleUnitsError.new("These units are incompatible") unless self.class == other.class
+      raise IncompatibleUnitsError.new("These units are incompatible (#{self.uom} and #{other.uom})") unless self.class == other.class
       comp_hash = self.scale_hash
       order_of_mag_comp = comp_hash[self.uom] <=> comp_hash[other.uom]
       if order_of_mag_comp == -1
@@ -110,7 +96,7 @@ module Unit
         #Return new unit
         self.class.new(scaled_amount, uom, @components)
       else
-        raise IncompatibleUnitsError.new("This unit is incompatible")
+        raise IncompatibleUnitsError.new("This unit is incompatible (#{uom})")
       end
     end
 
@@ -123,7 +109,7 @@ module Unit
     end
 
     def self.equivalise(u1, u2)
-      raise IncompatibleUnitsError.new("These units are incompatible") unless u1.class == u2.class
+      raise IncompatibleUnitsError.new("These units are incompatible (#{u1.uom} and #{u2.uom})") unless u1.class == u2.class
       comp_hash = u1.scale_hash
       order_of_mag_comp = comp_hash[u1.uom] <=> comp_hash[u2.uom]
       if order_of_mag_comp == -1
@@ -133,6 +119,10 @@ module Unit
       elsif order_of_mag_comp == 1
         return u1.convert_to(u2.uom), u2
       end
+    end
+
+    def concentration?
+      false
     end
 
     #Display methods

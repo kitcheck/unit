@@ -8,16 +8,16 @@ module Unit
         else
           if self < other
             scaled_other = other.convert_to(self.uom)
-            Mass.new((@scalar - scaled_other.scalar), scaled_other.uom, @components + other.components)
+            Mass.new((@scalar / scaled_other.scalar), scaled_other.uom, @components + other.components)
           else
             scaled_self = self.convert_to(other.uom)
-            Mass.new((scaled_self.scalar - other.scalar), scaled_self.uom, @components + other.components)
+            Mass.new((scaled_self.scalar / other.scalar), scaled_self.uom, @components + other.components)
           end
         end
       elsif other.is_a? Volume
         Concentration.new(self, other)
       else
-        raise IncompatibleUnitsError.new("These units are incompatible")
+        raise IncompatibleUnitsError.new("These units are incompatible (#{self.uom} and #{other.uom})")
       end
     end
 
