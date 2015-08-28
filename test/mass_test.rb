@@ -98,6 +98,17 @@ class MassTest < Minitest::Test
         assert_equal '0.5 mg', (u1/u2).to_s
       end
     end
+    context "dividing by volume" do
+      should "create a concentration" do
+        u1 = Unit::Mass.new(3, 'mg')
+        u2 = Unit::Volume.new(1, 'ml')
+        conc = u1/u2
+
+        assert_equal true, conc.is_a?(Unit::Concentration)
+        assert_equal 3, conc.calculated_scalar
+        assert_equal "mg/ml", conc.calculated_uom
+      end
+    end
   end
 
   context "comparison" do
