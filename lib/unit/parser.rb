@@ -29,7 +29,7 @@ module Unit
         if scalar.nil? #If we don't match a unit for the uom we will assume it's 1
           scalar = 1
         end
-        uom = uom_regex.match(node).to_s
+        uom = uom_regex.match(node).to_s.downcase
         determine_class(uom).new(scalar, uom)
       end
     end

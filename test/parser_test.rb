@@ -23,6 +23,13 @@ class ParserTest < Minitest::Test
         Unit::Parser.new("5 mg /").parse
       end
     end
+
+    should "Handle capitalization" do
+      mass = Unit::Parser.new("5 Mg").parse
+      assert_equal true, mass.mass?
+      assert_equal 5.0, mass.scalar
+      assert_equal "mg", mass.uom
+    end
   end
 
   should "parse a volume" do
