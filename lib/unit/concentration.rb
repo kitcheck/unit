@@ -8,7 +8,7 @@ module Unit
       @denominator = denominator #Bottom of line
 
       if !numerator.is_a?(Mass) || !denominator.is_a?(Volume)
-        raise "Don't be that guy"
+        raise IncompatibleUnitsError.new("The numerator must be a mass and the denominator must be a volume")
       end
     end
 
@@ -52,6 +52,10 @@ module Unit
 
     def calculated_uom
       @numerator.uom + "/" + @denominator.uom
+    end
+
+    def concentration?
+      true
     end
 
     def to_hash

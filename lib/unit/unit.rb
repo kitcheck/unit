@@ -22,7 +22,7 @@ module Unit
       if self.scale_hash.keys.include? uom
         uom
       else
-        raise IncompatibleUnitsError.new("This unit is incompatible")
+        raise IncompatibleUnitsError.new("This unit is incompatible (#{uom})")
       end
     end
 
@@ -70,7 +70,7 @@ module Unit
     end
 
     def <=>(other)
-      raise IncompatibleUnitsError.new("These units are incompatible") unless self.class == other.class
+      raise IncompatibleUnitsError.new("These units are incompatible (#{self.uom} and #{other.uom})") unless self.class == other.class
       comp_hash = self.scale_hash
       order_of_mag_comp = comp_hash[self.uom] <=> comp_hash[other.uom]
       if order_of_mag_comp == -1
@@ -96,7 +96,7 @@ module Unit
         #Return new unit
         self.class.new(scaled_amount, uom, @components)
       else
-        raise IncompatibleUnitsError.new("This unit is incompatible")
+        raise IncompatibleUnitsError.new("This unit is incompatible (#{uom})")
       end
     end
 
@@ -109,7 +109,7 @@ module Unit
     end
 
     def self.equivalise(u1, u2)
-      raise IncompatibleUnitsError.new("These units are incompatible") unless u1.class == u2.class
+      raise IncompatibleUnitsError.new("These units are incompatible (#{u1.uom} and #{u2.uom})") unless u1.class == u2.class
       comp_hash = u1.scale_hash
       order_of_mag_comp = comp_hash[u1.uom] <=> comp_hash[u2.uom]
       if order_of_mag_comp == -1

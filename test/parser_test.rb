@@ -32,16 +32,31 @@ class ParserTest < Minitest::Test
     end
   end
 
-  should "parse a volume" do
-    vol = Unit::Parser.new("3 ml").parse
+  context "volume" do
+    should "parse a volume" do
+      vol = Unit::Parser.new("3 ml").parse
 
-    assert_equal true, vol.volume?
-    assert_equal 3.0, vol.scalar
-    assert_equal "ml", vol.uom
+      assert_equal true, vol.volume?
+      assert_equal 3.0, vol.scalar
+      assert_equal "ml", vol.uom
+    end
   end
 
-  should "parse a concentration" do
+  context "concentration" do
+    should "parse a normal concentration" do
+      conc = Unit::Parser.new("5 mg / 2 ml").parse
 
+      assert_equal true, conc.concentration?
+      assert_equal 2.5, conc.calculated_scalar
+      assert_equal "mg/ml", conc.calculated_uom
+    end
 
+    should "parse a poorly constructed concentration" do
+      conc = Unit::Parser.new("5 mg $/ 2 ml").parse
+
+      assert_equal true, conc.concentration?
+      assert_equal 2.5, conc.calculated_scalar
+      assert_equal "mg/ml", conc.calculated_uom
+    end
   end
 end

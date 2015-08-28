@@ -12,7 +12,7 @@ module Unit
       # Turns nodes into Mass or Volume objects if they match
       units = modify_nodes(ast)
       #Is there a slash?
-      slash_index = units.index{|u| u.is_a?(String)&& u == "/"}
+      slash_index = units.index{|u| u.to_s == "/"}
       if slash_index.nil? #No slash, reduce the array into a single Mass or Volume object
         units.reduce(:+)
       else #This is a concentration, or at least an attempt
@@ -30,14 +30,19 @@ module Unit
     def modify_nodes(ast)
       ast.map do |node|
         #Grab the scalar value of the string
-        scalar = scalar_regex.match(node).to_s
+        scalar = scalar_regex.match(node)
+        #Grab the uom of the string
+        uom = uom_regex.match(node)
         if scalar.nil? #If we don't match a unit for the uom we will assume it's 1
           scalar = 1
         end
-        #Grab the uom of the string
-        uom = uom_regex.match(node).to_s.downcase
         #Creates and returns the object for that uom
-        determine_class(uom).new(scalar, uom)
+        if !scalar.nil? && !uom.nil?
+          uom_string = uom.to_s.downcase
+          determine_class(uom_string).new(scalar.to_s, uom_string)
+        else
+          node
+        end
       end
     end
 
@@ -81,7 +86,7 @@ module Unit
       elsif Unit.scale_hash.keys.include? uom
         Unit
       else
-        raise IncompatibleUnitsError.new("This unit is incompatible")
+        raise IncompatibleUnitsError.new("This unit is incompatible (#{uom})")
       end
     end
   end
