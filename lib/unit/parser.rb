@@ -5,6 +5,8 @@ module Unit
       interpret_ast(ast)
     end
 
+    private
+
     def interpret_ast(ast)
       units = modify_nodes(ast)
       slash_index = units.index{|u| u.is_a?(String)&& u == "/"}
