@@ -7,11 +7,12 @@ require "unit/volume"
 require "unit/concentration"
 require "unit/errors"
 require "bigdecimal"
+require 'strscan'
 
 
 module Unit
   def self.parse(string)
-    Parser.parse(string)
+    Parser.new(string).parse
   end
 
   def self.from_object(object)

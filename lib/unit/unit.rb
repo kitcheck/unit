@@ -32,7 +32,6 @@ module Unit
       else
         if self < other
           scaled_other = other.convert_to(self.uom)
-          byebug
           self.class.new((@scalar + scaled_other.scalar), scaled_other.uom, @components + other.components)
         else
           scaled_self = self.convert_to(other.uom)
@@ -120,6 +119,10 @@ module Unit
       elsif order_of_mag_comp == 1
         return u1.convert_to(u2.uom), u2
       end
+    end
+
+    def concentration?
+      false
     end
 
     #Display methods
