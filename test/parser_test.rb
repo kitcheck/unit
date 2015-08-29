@@ -56,9 +56,8 @@ class ParserTest < Minitest::Test
         conc = Unit::Parser.new("5 mg $/ 2 ml").parse
 
         assert_equal true, conc.concentration?
-        assert_equal 2.5, conc.g
+        assert_equal 2.5, conc.scalar
         assert_equal "mg/ml", conc.uom
-      end
     end
   end
 
