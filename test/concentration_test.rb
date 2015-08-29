@@ -15,8 +15,8 @@ class ConcentrationTest < Minitest::Test
 
         new_con = con1 + con2
 
-        assert_equal 5, new_con.calculated_scalar
-        assert_equal 'mg/ml', new_con.calculated_uom
+        assert_equal 5, new_con.scalar
+        assert_equal 'mg/ml', new_con.uom
       end
 
       should "correctly add a smaller number" do
@@ -27,8 +27,8 @@ class ConcentrationTest < Minitest::Test
 
         new_con = con1 + con2
 
-        assert_equal 3.5, new_con.calculated_scalar
-        assert_equal 'mg/ml', new_con.calculated_uom
+        assert_equal 3.5, new_con.scalar
+        assert_equal 'mg/ml', new_con.uom
       end
 
       should "correctly add a larger number" do
@@ -40,8 +40,8 @@ class ConcentrationTest < Minitest::Test
 
         new_con = con2 + con1
 
-        assert_equal 3.5, new_con.calculated_scalar
-        assert_equal 'mg/ml', new_con.calculated_uom
+        assert_equal 3.5, new_con.scalar
+        assert_equal 'mg/ml', new_con.uom
       end
     end
 
@@ -55,8 +55,8 @@ class ConcentrationTest < Minitest::Test
       should "return correctly" do
         diluted_con = @con + Unit::Volume.new(1, 'ml')
 
-        assert_equal 1, diluted_con.calculated_scalar
-        assert_equal "mg/ml", diluted_con.calculated_uom
+        assert_equal 1, diluted_con.scalar
+        assert_equal "mg/ml", diluted_con.uom
       end
     end
 
@@ -70,8 +70,8 @@ class ConcentrationTest < Minitest::Test
       should "return correctly" do
         concentrate = @con + Unit::Mass.new(1, 'mg')
 
-        assert_equal 3, concentrate.calculated_scalar
-        assert_equal "mg/ml", concentrate.calculated_uom
+        assert_equal 3, concentrate.scalar
+        assert_equal "mg/ml", concentrate.uom
       end
     end
   end
@@ -89,8 +89,8 @@ class ConcentrationTest < Minitest::Test
       should "subtract correctly" do
         new_con = @con - Unit::Concentration.new(@mass, @volume)
 
-        assert_equal 1.5, new_con.calculated_scalar
-        assert_equal "mg/ml", new_con.calculated_uom
+        assert_equal 1.5, new_con.scalar
+        assert_equal "mg/ml", new_con.uom
       end
     end
 
@@ -99,8 +99,8 @@ class ConcentrationTest < Minitest::Test
       should "subtract correctly" do
         diluted_con = @con - @mass
 
-        assert_equal 1.5, diluted_con.calculated_scalar
-        assert_equal "mg/ml", diluted_con.calculated_uom
+        assert_equal 1.5, diluted_con.scalar
+        assert_equal "mg/ml", diluted_con.uom
       end
     end
 
@@ -109,8 +109,8 @@ class ConcentrationTest < Minitest::Test
         small_vol = Unit::Volume.new(0.5, 'ml')
         concentrate = @con - small_vol
 
-        assert_equal 4, concentrate.calculated_scalar
-        assert_equal "mg/ml", concentrate.calculated_uom
+        assert_equal 4, concentrate.scalar
+        assert_equal "mg/ml", concentrate.uom
       end
     end
   end

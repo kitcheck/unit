@@ -48,27 +48,27 @@ class ParserTest < Minitest::Test
         conc = Unit::Parser.new("5 mg / 2 ml").parse
 
         assert_equal true, conc.concentration?
-        assert_equal 2.5, conc.calculated_scalar
-        assert_equal "mg/ml", conc.calculated_uom
+        assert_equal 2.5, conc.scalar
+        assert_equal "mg/ml", conc.uom
       end
 
       should "parse a poorly constructed concentration" do
         conc = Unit::Parser.new("5 mg $/ 2 ml").parse
 
         assert_equal true, conc.concentration?
-        assert_equal 2.5, conc.calculated_scalar
-        assert_equal "mg/ml", conc.calculated_uom
+        assert_equal 2.5, conc.scalar
+        assert_equal "mg/ml", conc.uom
       end
     end
-  end
 
-  context "#from_scalar_and_uom" do
-    should "call the parser with the a scalar and uom in string" do
-      mass = Unit.from_scalar_and_uom(5, "mg")
+    context "#from_scalar_and_uom" do
+      should "call the parser with the a scalar and uom in string" do
+        mass = Unit.from_scalar_and_uom(5, "mg")
 
-      assert_equal true, mass.mass?
-      assert_equal 5, mass.scalar
-      assert_equal "mg", mass.uom
+        assert_equal true, mass.mass?
+        assert_equal 5, mass.scalar
+        assert_equal "mg", mass.uom
+      end
     end
   end
 end
