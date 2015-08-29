@@ -14,4 +14,8 @@ module Unit
   def self.parse(string)
     Parser.new(string).parse
   end
+
+  def self.from_scalar_and_uom(scalar, uom)
+    Parser.new("#{scalar} #{uom}").parse
+  end
 end
