@@ -1,7 +1,7 @@
 module Unit
   class Concentration
 
-    attr_reader :numerator, :denominator, :calculated_scalar, :calculated_uom
+    attr_reader :numerator, :denominator, :scalar, :uom
 
     def initialize(numerator, denominator)
       @numerator = numerator#Top of line
@@ -43,14 +43,14 @@ module Unit
 
     def <=>(other)
       con1, con2 = Concentration.equivalise(self, other)
-      con1.calculated_scalar <=> con2.calculated_scalar
+      con1.scalar <=> con2.scalar
     end
 
-    def calculated_scalar
+    def scalar
       @numerator.scalar / @denominator.scalar
     end
 
-    def calculated_uom
+    def uom
       @numerator.uom + "/" + @denominator.uom
     end
 
@@ -60,16 +60,16 @@ module Unit
 
     def to_hash
       {
-        :scalar => calculated_scalar,
-        :uom => calculated_uom
+        :scalar => scalar,
+        :uom => uom
 
       }
     end
 
     def to_formatted_hash
       to_hash.merge!({
-        :scalar_formatted => Formatter.scalar_formatted(calculated_scalar),
-        :uom_formatted => Formatter.uom_formatted(calculated_uom)
+        :scalar_formatted => Formatter.scalar_formatted(scalar),
+        :uom_formatted => Formatter.uom_formatted(uom)
       })
     end
 

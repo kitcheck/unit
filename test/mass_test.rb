@@ -105,8 +105,8 @@ class MassTest < Minitest::Test
         conc = u1/u2
 
         assert_equal true, conc.is_a?(Unit::Concentration)
-        assert_equal 3, conc.calculated_scalar
-        assert_equal "mg/ml", conc.calculated_uom
+        assert_equal 3, conc.scalar
+        assert_equal "mg/ml", conc.uom
       end
     end
   end
