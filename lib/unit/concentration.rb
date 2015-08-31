@@ -58,6 +58,10 @@ module Unit
       true
     end
 
+    def to_s
+      "#{scalar.to_s("F")} #{uom}"
+    end
+
     def to_hash
       {
         :scalar => scalar,
