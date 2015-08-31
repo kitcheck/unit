@@ -52,6 +52,14 @@ class ParserTest < Minitest::Test
         assert_equal "mg/ml", conc.uom
       end
 
+      should "parse a concentration with no scalar denominator qqq" do
+        conc = Unit::Parser.new("5 mg/ml").parse
+
+        assert_equal true, conc.concentration?
+        assert_equal 5, conc.scalar
+        assert_equal "mg/ml", conc.uom
+      end
+
       should "parse a poorly constructed concentration" do
         conc = Unit::Parser.new("5 mg $/ 2 ml").parse
 

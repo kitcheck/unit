@@ -33,11 +33,11 @@ module Unit
         scalar = scalar_regex.match(node)
         #Grab the uom of the string
         uom = uom_regex.match(node)
-        if scalar.nil? #If we don't match a unit for the uom we will assume it's 1
+        if scalar.to_s == "" #If we don't match a unit for the uom we will assume it's 1
           scalar = 1
         end
         #Creates and returns the object for that uom
-        if !scalar.nil? && !uom.nil?
+        if !(scalar == "") && !(uom == "") && node != "/"
           uom_string = uom.to_s.downcase
           determine_class(uom_string).new(scalar.to_s, uom_string)
         else
