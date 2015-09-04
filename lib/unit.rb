@@ -1,6 +1,7 @@
 require "unit/version"
 require "unit/formatter"
 require "unit/parser"
+require "unit/base"
 require "unit/unit"
 require "unit/mass"
 require "unit/volume"

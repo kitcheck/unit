@@ -1,5 +1,5 @@
 module Unit
-  class Mass < Unit
+  class Mass < Base
 
     def /(other)
       if other.is_a? Mass
@@ -28,10 +28,6 @@ module Unit
         'mg' => 0,
         'g' => 3
       }
-    end
-
-    def scale_hash
-      Mass.scale_hash
     end
   end
 end
