@@ -1,14 +1,10 @@
 module Unit
-  class Volume < Unit
+  class Volume < Base
 
     def self.scale_hash
       {
         'ml' => 0
       }
-    end
-
-    def scale_hash
-      Volume.scale_hash
     end
   end
 end
