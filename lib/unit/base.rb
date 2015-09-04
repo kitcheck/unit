@@ -1,5 +1,5 @@
 module Unit
-  class Unit
+  class Base
     include Comparable
 
     attr_reader :scalar, :uom, :components
