@@ -2,31 +2,44 @@ require 'test_helper'
 
 class ParserTest < Minitest::Test
   context "#parse" do
-    context "mass" do
-      should "parse a normal mass" do
-        mass = Unit::Parser.new("5 mg").parse
 
-        assert_equal true, mass.mass?
-        assert_equal 5.0, mass.scalar
-        assert_equal "mg", mass.uom
-      end
-
-      should "parse a weird mass" do
-        mass = Unit::Parser.new("@ 5 mg").parse
-
-        assert_equal true, mass.mass?
-        assert_equal 5.0, mass.scalar
-        assert_equal "mg", mass.uom
-      end
-
+    context "errors" do
       should "Throw an error with weird slash" do
         assert_raises Unit::IncompatibleUnitsError do
-          Unit::Parser.new("5 mg /").parse
+          Unit.parse("5 mg /")
         end
       end
 
+      should "throw an error with invalid symbol" do
+        assert_raises Unit::IncompatibleUnitsError do
+          Unit.parse("@ 5 mg")
+        end
+      end
+
+      should "raise on invalid unit" do
+        assert_raises Unit::IncompatibleUnitsError do
+          Unit.parse("5 mcL")
+        end
+      end
+
+      should "not parse a poorly constructed concentration" do
+        assert_raises Unit::IncompatibleUnitsError do
+          Unit.parse("5 mg $/ 2 ml")
+        end
+      end
+    end
+
+    context "mass" do
+      should "parse a normal mass" do
+        mass = Unit.parse('5 mg')
+
+        assert_equal true, mass.mass?
+        assert_equal 5.0, mass.scalar
+        assert_equal "mg", mass.uom
+      end
+
       should "Handle capitalization" do
-        mass = Unit::Parser.new("5 Mg").parse
+        mass = Unit.parse("5 Mg")
         assert_equal true, mass.mass?
         assert_equal 5.0, mass.scalar
         assert_equal "mg", mass.uom
@@ -35,7 +48,7 @@ class ParserTest < Minitest::Test
 
     context "volume" do
       should "parse a volume" do
-        vol = Unit::Parser.new("3 ml").parse
+        vol = Unit.parse("3 ml")
 
         assert_equal true, vol.volume?
         assert_equal 3.0, vol.scalar
@@ -45,7 +58,7 @@ class ParserTest < Minitest::Test
 
     context "concentration" do
       should "parse a normal concentration" do
-        conc = Unit::Parser.new("5 mg / 2 ml").parse
+        conc = Unit.parse("5 mg / 2 ml")
 
         assert_equal true, conc.concentration?
         assert_equal 2.5, conc.scalar
@@ -53,29 +66,19 @@ class ParserTest < Minitest::Test
       end
 
       should "parse a concentration with no scalar denominator qqq" do
-        conc = Unit::Parser.new("5 mg/ml").parse
+        conc = Unit.parse("5 mg/ml")
 
         assert_equal true, conc.concentration?
         assert_equal 5, conc.scalar
         assert_equal "mg/ml", conc.uom
       end
 
-      should "parse a poorly constructed concentration" do
-        conc = Unit::Parser.new("5 mg $/ 2 ml").parse
+      should "parse a %" do
+        conc = Unit.parse('5 %')
 
         assert_equal true, conc.concentration?
-        assert_equal 2.5, conc.scalar
+        assert_equal 50, conc.scalar
         assert_equal "mg/ml", conc.uom
-      end
-    end
-
-    context "#from_scalar_and_uom" do
-      should "call the parser with the a scalar and uom in string" do
-        mass = Unit.from_scalar_and_uom(5, "mg")
-
-        assert_equal true, mass.mass?
-        assert_equal 5, mass.scalar
-        assert_equal "mg", mass.uom
       end
     end
   end

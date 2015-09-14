@@ -70,6 +70,18 @@ Unit classes also provide some formatting methods that will return hashes for cl
 A Concentration class is derived from dividing a Mass by a Volume. The class maintains the numerator and denominator as distinct <br/>
 elements until display to not lose precision.
 
+## Development
+
+If you are making changes to the parser, you will need two additional gems, Rexical and Racc. These can be installed with:
+
+    $ gem install rexical
+    $ gem install racc
+
+In order to rebuild the parser, type:
+
+    $ rake build:parser
+
+This will rebuild both the lexical grammar and the parser.
 
 ## Contributing
 
