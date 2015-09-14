@@ -6,7 +6,7 @@ macro
   SCALAR      [-+]?[0-9]*\.?[0-9]+
   MASS_UOM    \b(?:mcg|mg|g)\b
   VOLUME_UOM  \b(?:ml)\b
-  UNIT_UOM    \b(?:unit)\b
+  UNIT_UOM    \b(?:unit|ea)\b
 rule
   {BLANK}
   {SCALAR}      { [:SCALAR, BigDecimal.new(text, 10)] }
