@@ -72,6 +72,14 @@ class ParserTest < Minitest::Test
         assert_equal 5, conc.scalar
         assert_equal "mg/ml", conc.uom
       end
+
+      should "parse a %" do
+        conc = Unit.parse('5 %')
+
+        assert_equal true, conc.concentration?
+        assert_equal 50, conc.scalar
+        assert_equal "mg/ml", conc.uom
+      end
     end
   end
 end
