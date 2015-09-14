@@ -12,8 +12,8 @@ rule
   {SCALAR}      { [:SCALAR, BigDecimal.new(text, 10)] }
 
   #Mass
-  {MASS_UOM}    { [:MASS_UOM, text] }
   gm            { [:MASS_UOM, 'g'] }
+  {MASS_UOM}    { [:MASS_UOM, text] }
 
   #Volume
   {VOLUME_UOM}  { [:VOLUME_UOM, text] }
