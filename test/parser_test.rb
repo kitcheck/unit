@@ -44,6 +44,14 @@ class ParserTest < Minitest::Test
         assert_equal 5.0, mass.scalar
         assert_equal "mg", mass.uom
       end
+
+      should "parse gm" do
+        mass = Unit.parse('5 gm')
+
+        assert_equal true, mass.mass?
+        assert_equal 5.0, mass.scalar
+        assert_equal "g", mass.uom
+      end
     end
 
     context "volume" do
