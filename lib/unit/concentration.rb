@@ -1,5 +1,6 @@
 module Unit
   class Concentration
+    include Comparable
 
     attr_reader :numerator, :denominator, :scalar, :uom
 

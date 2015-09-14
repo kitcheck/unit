@@ -1,6 +1,21 @@
 require 'test_helper'
 
 class ConcentrationTest < Minitest::Test
+  context "equality" do
+    context "equal" do
+      setup do
+        @num1 = Unit::Mass.new(2, 'mg')
+        @num2 = Unit::Mass.new(2, 'mg')
+        denom = Unit::Volume.new(1, 'ml')
+        @con1 = Unit::Concentration.new(@num1, denom)
+        @con2 = Unit::Concentration.new(@num2, denom)
+      end
+
+      should "be equal" do
+        assert_equal @con1, @con2
+      end
+    end
+  end
   context "addition" do
     context "adding concentration" do
       setup do
@@ -95,7 +110,6 @@ class ConcentrationTest < Minitest::Test
     end
 
     context "mass" do
-      
       should "subtract correctly" do
         diluted_con = @con - @mass
 
