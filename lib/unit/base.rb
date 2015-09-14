@@ -55,7 +55,16 @@ module Unit
     end
 
     def /(other)
-      raise "Implement in subclasses"
+      if other.is_a? self.class
+        if @uom == other.uom
+          self.class.new((@scalar / other.scalar), @uom, @components + other.components)
+        else
+          u1, u2 = self.class.equivalise(self, other)
+          self.class.new((u1.scalar / u2.scalar), u1.uom, u1.components + other.components)
+        end
+      else
+        raise "Implement in subclasses"
+      end
     end
 
     alias_method :add, :+

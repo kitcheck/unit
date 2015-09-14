@@ -6,13 +6,8 @@ module Unit
         if @uom == other.uom
           Mass.new((@scalar / other.scalar), @uom, @components + other.components)
         else
-          if self < other
-            scaled_other = other.convert_to(self.uom)
-            Mass.new((@scalar / scaled_other.scalar), scaled_other.uom, @components + other.components)
-          else
-            scaled_self = self.convert_to(other.uom)
-            Mass.new((scaled_self.scalar / other.scalar), scaled_self.uom, @components + other.components)
-          end
+          u1, u2 = Mass.equivalise(self, other)
+          Mass.new((u1.scalar / u2.scalar), u1.uom, u1.components + other.components)
         end
       elsif other.is_a? Volume
         Concentration.new(self, other)
