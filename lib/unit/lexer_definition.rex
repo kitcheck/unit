@@ -4,15 +4,15 @@ option
 macro
   BLANK       [\ \t]+
   SCALAR      [-+]?[0-9]*\.?[0-9]+
-  MASS_UOM    mcg|mg|g
-  VOLUME_UOM  ml
-  UNIT_UOM    unit
+  MASS_UOM    \b(?:mcg|mg|g)\b
+  VOLUME_UOM  \b(?:ml)\b
+  UNIT_UOM    \b(?:unit)\b
 rule
   {BLANK}
   {SCALAR}      { [:SCALAR, BigDecimal.new(text, 10)] }
 
   #Mass
-  gm            { [:MASS_UOM, 'g'] }
+  \b(?:gm)\b    { [:MASS_UOM, 'g'] }
   {MASS_UOM}    { [:MASS_UOM, text] }
 
   #Volume

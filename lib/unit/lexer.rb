@@ -63,16 +63,16 @@ class Unit::Lexer < Racc::Parser
       when (text = @ss.scan(/[-+]?[0-9]*\.?[0-9]+/i))
          action { [:SCALAR, BigDecimal.new(text, 10)] }
 
-      when (text = @ss.scan(/gm/i))
+      when (text = @ss.scan(/\b(?:gm)\b/i))
          action { [:MASS_UOM, 'g'] }
 
-      when (text = @ss.scan(/mcg|mg|g/i))
+      when (text = @ss.scan(/\b(?:mcg|mg|g)\b/i))
          action { [:MASS_UOM, text] }
 
-      when (text = @ss.scan(/ml/i))
+      when (text = @ss.scan(/\b(?:ml)\b/i))
          action { [:VOLUME_UOM, text] }
 
-      when (text = @ss.scan(/unit/i))
+      when (text = @ss.scan(/\b(?:unit)\b/i))
          action { [:UNIT_UOM, text] }
 
       when (text = @ss.scan(/\//i))
