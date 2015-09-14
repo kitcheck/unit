@@ -18,7 +18,7 @@ rule
 
   unit : SCALAR UNIT_UOM { return Unit.new(val[0], val[1]) }
 
-  percent : SCALAR PERCENT { return Concentration.new(Mass.new(val[0], 'mg'), Volume.new(1, 'ml')) }
+  percent : SCALAR PERCENT { return Concentration.new(Mass.new(val[0] * 10, 'mg'), Volume.new(1, 'ml')) }
 
 end
 

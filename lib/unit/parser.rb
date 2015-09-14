@@ -176,7 +176,7 @@ module_eval(<<'.,.,', 'parser_definition.y', 18)
 
 module_eval(<<'.,.,', 'parser_definition.y', 20)
   def _reduce_12(val, _values, result)
-     return Concentration.new(Mass.new(val[0], 'mg'), Volume.new(1, 'ml')) 
+     return Concentration.new(Mass.new(val[0] * 10, 'mg'), Volume.new(1, 'ml')) 
     result
   end
 .,.,
