@@ -1,6 +1,28 @@
 require 'test_helper'
 
 class ConcentrationTest < Minitest::Test
+  context "initialization" do
+    setup do
+      @denom = Unit::Volume.new(1, 'ml')
+    end
+    should "allow mass in numerator" do
+      num = Unit::Mass.new(5, 'mg')
+      Unit::Concentration.new(num, @denom)
+    end
+    should "allow unit in numerator" do
+      num = Unit::Unit.new(2, 'unit')
+      Unit::Concentration.new(num, @denom)
+    end
+
+    should "blow up if denominator is not volume" do
+      num = Unit::Mass.new(5, 'mg')
+      denom = Unit::Unit.new(3, 'unit')
+
+      assert_raises Unit::IncompatibleUnitsError do
+        Unit::Concentration.new(num, denom)
+      end
+    end
+  end
   context "equality" do
     context "equal" do
       setup do
