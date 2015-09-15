@@ -47,6 +47,17 @@ module Unit
       con1.scalar <=> con2.scalar
     end
 
+    def mass_from_volume(volume)
+      raise ArgumentError.new("Argument must be a volume") unless volume.volume?
+      volume = volume.convert_to(denominator.uom)
+      Mass.new(scalar, numerator.uom).scale(volume.scalar)
+    end
+
+    def volume_from_mass(mass)
+      raise ArgumentError.new("Argument must be a mass") unless mass.mass?
+      denominator.scale((mass / numerator).scalar)
+    end
+
     def scalar
       @numerator.scalar / @denominator.scalar
     end
