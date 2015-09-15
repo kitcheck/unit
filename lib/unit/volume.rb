@@ -3,7 +3,8 @@ module Unit
 
     def self.scale_hash
       {
-        'ml' => 0
+        'ml' => 0,
+        'l' => 3
       }
     end
   end

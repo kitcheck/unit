@@ -62,6 +62,14 @@ class ParserTest < Minitest::Test
         assert_equal 3.0, vol.scalar
         assert_equal "ml", vol.uom
       end
+
+      should "parse a liter" do
+        vol = Unit.parse("3 l")
+
+        assert_equal true, vol.volume?
+        assert_equal 3.0, vol.scalar
+        assert_equal "l", vol.uom
+      end
     end
 
     context "concentration" do
