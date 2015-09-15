@@ -18,4 +18,8 @@ module Unit
   rescue
     raise IncompatibleUnitsError
   end
+
+  def self.from_scalar_and_uom(scalar, uom)
+    self.parse("#{scalar} #{uom}")
+  end
 end
