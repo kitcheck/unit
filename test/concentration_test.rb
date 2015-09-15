@@ -128,4 +128,33 @@ class ConcentrationTest < Minitest::Test
       end
     end
   end
+
+  context "#mass_from_volume" do
+    setup do
+      num1 = Unit::Mass.new(2, 'mg')
+      denom = Unit::Volume.new(1, 'ml')
+      @con = Unit::Concentration.new(num1, denom)
+    end
+
+    should "correctly calculate" do
+      mass = @con.mass_from_volume(Unit::Volume.new(2, 'ml'))
+      assert_equal 4, mass.scalar
+      assert_equal 'mg', mass.uom
+    end
+  end
+
+  context "#volume_from_mass" do
+    setup do
+      num1 = Unit::Mass.new(2, 'mg')
+      denom = Unit::Volume.new(1, 'ml')
+      @con = Unit::Concentration.new(num1, denom)
+    end
+
+    should "correctly calculate" do
+      vol = @con.volume_from_mass(Unit::Mass.new(0.5, 'mg'))
+
+      assert_equal 0.25, vol.scalar
+      assert_equal 'ml', vol.uom
+    end
+  end
 end
