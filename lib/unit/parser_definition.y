@@ -4,6 +4,8 @@ rule
   valid_unit:
     concentration |
     concentration_no_denom_scalar |
+    unit_concentration |
+    unit_concentration_no_denom_scalar |
     mass |
     volume |
     unit |
@@ -11,6 +13,9 @@ rule
 
   concentration : mass SLASH volume { return Concentration.new(val[0], val[2]) }
   concentration_no_denom_scalar : mass SLASH VOLUME_UOM { return Concentration.new(val[0], Volume.new(1, val[2])) }
+
+  unit_concentration : unit SLASH volume { return Concentration.new(val[0], val[2]) }
+  unit_concentration_no_denom_scalar : unit SLASH VOLUME_UOM { return Concentration.new(val[0], Volume.new(1, val[2])) }
 
   mass : SCALAR MASS_UOM { return Mass.new(val[0], val[1]) }
 
