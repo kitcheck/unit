@@ -109,6 +109,8 @@ module Unit
       end
     end
 
+    alias_method :>>, :convert_to
+
     def mass?
       Mass.scale_hash.keys.include? self.uom
     end
