@@ -100,7 +100,7 @@ module Unit
       if destination_exp
         source_exp = self.scale_hash[@uom]
         #Get difference in exponents
-        exp_diff = (destination_exp - source_exp).abs
+        exp_diff = source_exp - destination_exp
         scaled_amount = @scalar * BigDecimal.new((10**exp_diff), 10)
         #Return new unit
         self.class.new(scaled_amount, uom, @components)

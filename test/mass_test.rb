@@ -166,4 +166,22 @@ class MassTest < Minitest::Test
       end
     end
   end
+
+  context "conversion" do
+    [
+      ['1 mg', 'mcg', 1000],
+      ['1 mcg', 'mg', 0.001],
+      ['1 mg', 'g', 0.001],
+      ['1 g', 'mg', 1000],
+      ['1 mcg', 'g', 0.000001],
+      ['1 g', 'mcg', 1000000]
+    ].each do |start, dest_uom, expected_scalar|
+      should "convert #{start} to #{dest_uom}" do
+        mass = Unit.parse(start)
+        converted_mass = mass.convert_to(dest_uom)
+        assert_equal expected_scalar, converted_mass.scalar
+        assert_equal dest_uom, converted_mass.uom
+      end
+    end
+  end
 end

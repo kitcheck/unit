@@ -56,4 +56,18 @@ class VolumeTest < Minitest::Test
       end
     end
   end
+
+  context "conversion" do
+    [
+      ['1 ml', 'l', 0.001],
+      ['1 l', 'ml', 1000]
+    ].each do |start, dest_uom, expected_scalar|
+      should "convert #{start} to #{dest_uom}" do
+        vol = Unit.parse(start)
+        converted_vol = vol.convert_to(dest_uom)
+        assert_equal expected_scalar, converted_vol.scalar
+        assert_equal dest_uom, converted_vol.uom
+      end
+    end
+  end
 end
