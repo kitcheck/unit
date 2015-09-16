@@ -51,6 +51,15 @@ module Unit
       end
     end
 
+    def convert_to(uom)
+      uoms = uom.split("/")
+      if uoms.size  <= 1
+        raise IncompatibleUnitsError
+      end
+      Concentration.new(numerator.convert_to(uoms[0]), denominator.convert_to(uoms[1]))
+    end
+    alias_method :>>, :convert_to
+
     def <=>(other)
       con1, con2 = Concentration.equivalise(self, other)
       con1.scalar <=> con2.scalar
