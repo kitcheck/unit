@@ -3,12 +3,7 @@ module Unit
 
     def /(other)
       if other.is_a? Mass
-        if @uom == other.uom
-          Mass.new((@scalar / other.scalar), @uom, @components + other.components)
-        else
-          u1, u2 = Mass.equivalise(self, other)
-          Mass.new((u1.scalar / u2.scalar), u1.uom, u1.components + other.components)
-        end
+        super(other)
       elsif other.is_a? Volume
         Concentration.new(self, other)
       else
