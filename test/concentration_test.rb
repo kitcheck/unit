@@ -186,4 +186,24 @@ class ConcentrationTest < Minitest::Test
       assert_equal 'ml', vol.uom
     end
   end
+
+  context "conversion" do
+    setup do
+      num1 = Unit::Mass.new(2, 'mg')
+      denom = Unit::Volume.new(1, 'ml')
+      @con = Unit::Concentration.new(num1, denom)
+    end
+
+    should "raise if invalid" do
+      assert_raises Unit::IncompatibleUnitsError do
+        @con >> 'mg'
+      end
+    end
+
+    should "convert correctly" do
+      new_con = @con >> 'mcg/ml'
+      assert_equal 2000, new_con.scalar
+      assert_equal 'mcg/ml', new_con.uom
+    end
+  end
 end

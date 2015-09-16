@@ -108,7 +108,6 @@ module Unit
         raise IncompatibleUnitsError.new("This unit is incompatible (#{uom})")
       end
     end
-
     alias_method :>>, :convert_to
 
     def mass?
