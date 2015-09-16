@@ -42,6 +42,13 @@ module Unit
       end
     end
 
+    def /(other)
+      if other.concentration?
+        con1, con2 = Concentration.equivalise(self, other)
+        con1.scalar / con2.scalar
+      end
+    end
+
     def <=>(other)
       con1, con2 = Concentration.equivalise(self, other)
       con1.scalar <=> con2.scalar
