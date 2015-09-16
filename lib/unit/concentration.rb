@@ -46,6 +46,8 @@ module Unit
       if other.concentration?
         con1, con2 = Concentration.equivalise(self, other)
         con1.scalar / con2.scalar
+      else
+        raise IncompatibleUnitsError
       end
     end
 
