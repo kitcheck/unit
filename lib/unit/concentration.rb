@@ -65,7 +65,7 @@ module Unit
     def volume_from_mass(mass)
       raise ArgumentError.new("Argument must be a mass") unless mass.mass?
       mass = mass.convert_to(numerator.uom)
-      denominator.scale((mass / numerator).scalar)
+      denominator.scale(mass / numerator)
     end
 
     def scalar
