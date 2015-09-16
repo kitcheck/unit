@@ -57,10 +57,10 @@ module Unit
     def /(other)
       if other.is_a? self.class
         if @uom == other.uom
-          self.class.new((@scalar / other.scalar), @uom, @components + other.components)
+          @scalar / other.scalar
         else
           u1, u2 = self.class.equivalise(self, other)
-          self.class.new((u1.scalar / u2.scalar), u1.uom, u1.components + other.components)
+          u1.scalar / u2.scalar
         end
       else
         raise "Implement in subclasses"
