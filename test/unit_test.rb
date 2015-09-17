@@ -15,4 +15,18 @@ class UnitTest < Minitest::Test
       end
     end
   end
+
+  context "division" do
+    context "dividing by volume" do
+      should "create a concentration" do
+        u1 = Unit::Unit.new(10, 'unit')
+        u2 = Unit::Volume.new(1, 'ml')
+        conc = u1/u2
+
+        assert_equal true, conc.concentration?
+        assert_equal 10, conc.scalar
+        assert_equal "unit/ml", conc.uom
+      end
+    end
+  end
 end
