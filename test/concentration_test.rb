@@ -25,16 +25,48 @@ class ConcentrationTest < Minitest::Test
   end
   context "equality" do
     context "equal" do
-      setup do
-        @num1 = Unit::Mass.new(2, 'mg')
-        @num2 = Unit::Mass.new(2, 'mg')
-        denom = Unit::Volume.new(1, 'ml')
-        @con1 = Unit::Concentration.new(@num1, denom)
-        @con2 = Unit::Concentration.new(@num2, denom)
-      end
+      context "different units" do
+        context "same denom" do
+          setup do
+            @num1 = Unit::Mass.new(2000, 'mcg')
+            @num2 = Unit::Mass.new(2, 'mg')
+            denom = Unit::Volume.new(1, 'ml')
+            @con1 = Unit::Concentration.new(@num1, denom)
+            @con2 = Unit::Concentration.new(@num2, denom)
+          end
 
-      should "be equal" do
-        assert_equal @con1, @con2
+          should "be equal" do
+            assert_equal @con1, @con2
+          end
+        end
+
+        context "both different" do
+          setup do
+            @num1 = Unit::Mass.new(2, 'g')
+            denom1 = Unit::Volume.new(1, 'l')
+            @num2 = Unit::Mass.new(2, 'mg')
+            denom2 = Unit::Volume.new(1, 'ml')
+            @con1 = Unit::Concentration.new(@num1, denom1)
+            @con2 = Unit::Concentration.new(@num2, denom2)
+          end
+
+          should "be equal" do
+            assert_equal @con1, @con2
+          end
+        end
+      end
+      context "same units" do
+        setup do
+          @num1 = Unit::Mass.new(2, 'mg')
+          @num2 = Unit::Mass.new(2, 'mg')
+          denom = Unit::Volume.new(1, 'ml')
+          @con1 = Unit::Concentration.new(@num1, denom)
+          @con2 = Unit::Concentration.new(@num2, denom)
+        end
+
+        should "be equal" do
+          assert_equal @con1, @con2
+        end
       end
     end
   end

@@ -62,7 +62,7 @@ module Unit
 
     def <=>(other)
       con1, con2 = Concentration.equivalise(self, other)
-      con1.scalar <=> con2.scalar
+      con1.numerator <=> con2.numerator
     end
 
     def mass_from_volume(volume)
@@ -116,17 +116,21 @@ module Unit
         return con1, con2
       end
       #convert_denominator
-      converted_denom1, converted_denom2 = Unit.equivalise(con1.denominator, con2.denominator)
-      combined_denom = converted_denom1.class.new(converted_denom1.scalar * converted_denom2.scalar,
-                                                  converted_denom1.uom,
-                                                  converted_denom1.components + converted_denom2.components) #multiply denominators by each other
-      #cross multiply
-      scaled_num1 = con1.numerator.scale(converted_denom2.scalar)
-      scaled_num2 = con2.numerator.scale(converted_denom1.scalar)
-      new_con1 = Concentration.new(scaled_num1, combined_denom)
-      new_con2 = Concentration.new(scaled_num2, combined_denom)
+      if con1.denominator.class == con2.denominator.class
+        converted_denom1, converted_denom2 = Volume.equivalise(con1.denominator, con2.denominator)
+        combined_denom = converted_denom1.class.new(converted_denom1.scalar * converted_denom2.scalar,
+                                                    converted_denom1.uom,
+                                                    converted_denom1.components + converted_denom2.components) #multiply denominators by each other
+        #cross multiply
+        scaled_num1 = con1.numerator.scale(converted_denom2.scalar)
+        scaled_num2 = con2.numerator.scale(converted_denom1.scalar)
+        new_con1 = Concentration.new(scaled_num1, combined_denom)
+        new_con2 = Concentration.new(scaled_num2, combined_denom)
 
-      return new_con1, new_con2
+        return new_con1, new_con2
+      else
+        raise IncompatibleUnitsError
+      end
     end
   end
 end
