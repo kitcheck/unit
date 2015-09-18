@@ -61,8 +61,12 @@ module Unit
     alias_method :>>, :convert_to
 
     def <=>(other)
-      con1, con2 = Concentration.equivalise(self, other)
-      con1.numerator <=> con2.numerator
+      if self.class == other.class
+        con1, con2 = Concentration.equivalise(self, other)
+        con1.numerator <=> con2.numerator
+      else
+        nil
+      end
     end
 
     def mass_from_volume(volume)
