@@ -22,7 +22,7 @@ class MassTest < Minitest::Test
       should "raise on adding volume to mass" do
         u1 = Unit::Mass.new(5, 'mg')
         u2 = Unit::Volume.new(3, 'ml')
-        assert_raises Unit::IncompatibleUnitsError do
+        assert_raises ArgumentError do
           u1 + u2
         end
       end
@@ -49,7 +49,7 @@ class MassTest < Minitest::Test
       should "raise on subtracting a volume from a mass" do
         u1 = Unit::Mass.new(5, 'mg')
         u2 = Unit::Volume.new(3, 'ml')
-        assert_raises Unit::IncompatibleUnitsError do
+        assert_raises ArgumentError do
           u1 - u2
         end
       end

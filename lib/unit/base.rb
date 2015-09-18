@@ -79,15 +79,18 @@ module Unit
     end
 
     def <=>(other)
-      raise IncompatibleUnitsError.new("These units are incompatible (#{self.uom} and #{other.uom})") unless self.class == other.class
-      comp_hash = self.scale_hash
-      order_of_mag_comp = comp_hash[self.uom] <=> comp_hash[other.uom]
-      if order_of_mag_comp == -1
-        self <=> other.convert_to(self.uom)
-      elsif order_of_mag_comp == 0
-        self.scalar <=> other.scalar
-      elsif order_of_mag_comp == 1
-        self.convert_to(other.uom) <=> other
+      if self.class == other.class
+        comp_hash = self.scale_hash
+        order_of_mag_comp = comp_hash[self.uom] <=> comp_hash[other.uom]
+        if order_of_mag_comp == -1
+          self <=> other.convert_to(self.uom)
+        elsif order_of_mag_comp == 0
+          self.scalar <=> other.scalar
+        elsif order_of_mag_comp == 1
+          self.convert_to(other.uom) <=> other
+        end
+      else
+        nil
       end
     end
 
