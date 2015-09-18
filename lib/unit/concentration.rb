@@ -89,6 +89,18 @@ module Unit
       true
     end
 
+    def mass?
+      false
+    end
+
+    def volume?
+      false
+    end
+
+    def unit?
+      false
+    end
+
     def to_s
       "#{scalar.to_s("F")} #{uom}"
     end
