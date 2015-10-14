@@ -130,7 +130,7 @@ module Unit
       comp_hash = u1.scale_hash
       order_of_mag_comp = comp_hash[u1.uom] <=> comp_hash[u2.uom]
       if order_of_mag_comp == -1
-        return u1, u2.convert_to(u2.uom)
+        return u1, u2.convert_to(u1.uom)
       elsif order_of_mag_comp == 0
         return u1, u2
       elsif order_of_mag_comp == 1

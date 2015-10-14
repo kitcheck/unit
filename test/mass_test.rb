@@ -97,7 +97,14 @@ class MassTest < Minitest::Test
         u2 = Unit::Mass.new(2, 'mg')
         assert_equal 0.5, u1/u2
       end
+
+      should "handle conversions right" do
+        u1 = Unit::Mass.new(10000, 'mcg')
+        u2 = Unit::Mass.new(100, 'mg')
+        assert_equal 0.1, u1/u2
+      end
     end
+
     context "dividing by volume" do
       should "create a concentration" do
         u1 = Unit::Mass.new(3, 'mg')
