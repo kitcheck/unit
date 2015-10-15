@@ -6,7 +6,7 @@ class UnitTest < Minitest::Test
       @u1 = Unit::Unit.new(1, 'ea')
       @u2 = Unit::Unit.new(1, 'meq')
     end
-    
+
     should "not allow you to operate on two unitless objects of different uom" do
       [:+, :-, :/, :<].each do |operation|
         assert_raises Unit::IncompatibleUnitsError do
@@ -26,6 +26,17 @@ class UnitTest < Minitest::Test
         assert_equal true, conc.concentration?
         assert_equal 10, conc.scalar
         assert_equal "unit/ml", conc.uom
+      end
+    end
+  end
+
+  context "conversion" do
+    context "to another unit" do
+      should "blow up" do
+        u1 = Unit::Unit.new(10, 'unit')
+        assert_raises Unit::IncompatibleUnitsError do
+          u1 >> 'meq'
+        end
       end
     end
   end

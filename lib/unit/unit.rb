@@ -44,11 +44,12 @@ module Unit
     end
 
     def convert_to(uom)
-      if self.uom != other.uom && other.is_a?(Unit)
+      if self.uom != uom
         raise IncompatibleUnitsError.new("You cannot compare two different unitless units together")
       end
       super(other)
     end
+    alias_method :>>, :convert_to
 
     def self.equivalise(u1, u2)
       if u1.uom != u2.uom && other.is_a?(Unit)
