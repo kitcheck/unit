@@ -47,7 +47,7 @@ module Unit
       if self.uom != uom
         raise IncompatibleUnitsError.new("You cannot compare two different unitless units together")
       end
-      super(other)
+      super(uom)
     end
     alias_method :>>, :convert_to
 
