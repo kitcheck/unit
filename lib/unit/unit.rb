@@ -49,6 +49,7 @@ module Unit
       end
       super(other)
     end
+    alias_method :>>, :convert_to
 
     def self.equivalise(u1, u2)
       if u1.uom != u2.uom && other.is_a?(Unit)
