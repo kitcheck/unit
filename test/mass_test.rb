@@ -191,4 +191,21 @@ class MassTest < Minitest::Test
       end
     end
   end
+
+  context "#equivalise" do
+    [
+      ['1 mg', '1 mcg', '1000 mcg', '1 mcg'],
+      ['1 mcg', '1 mg', '1 mcg', '1000 mcg'],
+      ['1 mg', '1 g', '1 mg', '1000 mg'],
+      ['1 g', '1 mg', '1000 mg', '1 mg'],
+      ['1 g', '1 mcg', '1000000 mcg', '1 mcg'],
+      ['1 mcg', '1 g', '1 mcg', '1000000 mcg']
+    ].each do |u1, u2, expected_1, expected_2|
+      should "make #{u1} and #{u2} equivalent" do
+        eq1, eq2 = Unit::Mass.equivalise(Unit.parse(u1), Unit.parse(u2))
+        assert_equal eq1, Unit.parse(expected_1)
+        assert_equal eq2, Unit.parse(expected_2)
+      end
+    end
+  end
 end

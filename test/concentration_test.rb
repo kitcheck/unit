@@ -238,4 +238,15 @@ class ConcentrationTest < Minitest::Test
       assert_equal 'mcg/ml', new_con.uom
     end
   end
+
+  context "#equivalise" do
+    [
+      ['1 mcg/ml', '1 mg/ml', '1 mcg/ml', '1000 mcg/ml'],
+      ['1 mg/l', '1 mg/ml', '0.001 mg/ml', '1 mg/ml']
+    ].each do |u1, u2, expected_1, expected_2|
+      should "equivalise #{u1} and #{u2}" do
+
+      end
+    end
+  end
 end
