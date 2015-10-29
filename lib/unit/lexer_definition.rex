@@ -13,7 +13,7 @@ rule
   {SCALAR}      { [:SCALAR, BigDecimal.new(text, 10)] }
 
   #Mass
-  \b(?:gm)\b    { [:MASS_UOM, 'g'] }
+  \b(?:gm|gram)\b    { [:MASS_UOM, 'g'] }
   {MASS_UOM}    { [:MASS_UOM, text] }
 
   #Volume
