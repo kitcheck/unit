@@ -4,8 +4,7 @@ module Unit
     def self.scale_hash
       {
         'unit' => 0,
-        'ea' => 0,
-        'meq' => 0
+        'ea' => 0
       }
     end
 

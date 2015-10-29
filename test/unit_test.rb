@@ -4,7 +4,7 @@ class UnitTest < Minitest::Test
   context "different units" do
     setup do
       @u1 = Unit::Unit.new(1, 'ea')
-      @u2 = Unit::Unit.new(1, 'meq')
+      @u2 = Unit::Unit.new(1, 'unit')
     end
 
     should "not allow you to operate on two unitless objects of different uom" do

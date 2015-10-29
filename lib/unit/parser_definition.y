@@ -1,5 +1,5 @@
 class Unit::Parser
-token SCALAR MASS_UOM VOLUME_UOM UNIT_UOM UNITLESS_UOM PERCENT SLASH
+token SCALAR MASS_UOM VOLUME_UOM UNIT_UOM UNITLESS_UOM EQUIVALENCE_UOM PERCENT SLASH
 rule
   valid_unit:
     concentration |
@@ -8,11 +8,14 @@ rule
     unit_concentration_no_denom_scalar |
     unit_less_concentration |
     unit_less_concentration_no_denom_scalar |
+    equivalence_concentration |
+    equivalence_concentration_no_denom_scalar |
     rational_concentration |
     mass |
     volume |
     unit |
     unitless |
+    equivalence |
     percent
 
   concentration : mass SLASH volume { return Concentration.new(val[0], val[2]) }
@@ -21,6 +24,9 @@ rule
 
   unit_concentration : unit SLASH volume { return Concentration.new(val[0], val[2]) }
   unit_concentration_no_denom_scalar : unit SLASH VOLUME_UOM { return Concentration.new(val[0], Volume.new(1, val[2])) }
+
+  equivalence_concentration : equivalence SLASH volume { return Concentration.new(val[0], val[2]) }
+  equivalence_concentration_no_denom_scalar : equivalence SLASH VOLUME_UOM { return Concentration.new(val[0], Volume.new(1, val[2])) }
 
   unit_less_concentration : unitless SLASH volume { return Concentration.new(val[0], val[2]) }
   unit_less_concentration_no_denom_scalar : unitless SLASH VOLUME_UOM { return Concentration.new(val[0], val[2]) }
@@ -34,6 +40,8 @@ rule
   unitless : SCALAR UNITLESS_UOM { return Unit.new(val[0], val[1]) }
 
   percent : SCALAR PERCENT { return Concentration.new(Mass.new(val[0] * 10, 'mg'), Volume.new(1, 'ml')) }
+
+  equivalence : SCALAR EQUIVALENCE_UOM { return Equivalence.new(val[0], val[1]) }
 
 end
 
