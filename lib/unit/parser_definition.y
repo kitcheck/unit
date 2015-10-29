@@ -6,6 +6,8 @@ rule
     concentration_no_denom_scalar |
     unit_concentration |
     unit_concentration_no_denom_scalar |
+    unit_less_concentration |
+    unit_less_concentration_no_denom_scalar |
     rational_concentration |
     mass |
     volume |
@@ -19,6 +21,9 @@ rule
 
   unit_concentration : unit SLASH volume { return Concentration.new(val[0], val[2]) }
   unit_concentration_no_denom_scalar : unit SLASH VOLUME_UOM { return Concentration.new(val[0], Volume.new(1, val[2])) }
+
+  unit_less_concentration : unitless SLASH volume { return Concentration.new(val[0], val[2]) }
+  unit_less_concentration_no_denom_scalar : unitless SLASH VOLUME_UOM { return Concentration.new(val[0], val[2]) }
 
   mass : SCALAR MASS_UOM { return Mass.new(val[0], val[1]) }
 
