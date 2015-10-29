@@ -8,7 +8,7 @@ module Unit
       @numerator = numerator#Top of line
       @denominator = denominator #Bottom of line
 
-      if !(numerator.is_a?(Mass) || numerator.is_a?(Unit)) || !denominator.is_a?(Volume)
+      if !(numerator.is_a?(Mass) || numerator.is_a?(Unit) || numerator.is_a?(Equivalence)) || !denominator.is_a?(Volume)
         raise IncompatibleUnitsError.new("The numerator must be a mass and the denominator must be a volume")
       end
     end
