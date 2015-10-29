@@ -1,5 +1,5 @@
 class Unit::Parser
-token SCALAR MASS_UOM VOLUME_UOM UNIT_UOM PERCENT SLASH
+token SCALAR MASS_UOM VOLUME_UOM UNIT_UOM UNITLESS_UOM PERCENT SLASH
 rule
   valid_unit:
     concentration |
@@ -10,6 +10,7 @@ rule
     mass |
     volume |
     unit |
+    unitless |
     percent
 
   concentration : mass SLASH volume { return Concentration.new(val[0], val[2]) }
@@ -23,7 +24,9 @@ rule
 
   volume : SCALAR VOLUME_UOM { return Volume.new(val[0], val[1]) }
 
-  unit : SCALAR UNIT_UOM { return Unit.new(val[0], val[1]) }
+  unit : SCALAR UNIT_UOM { return Unit.new(val[0], 'unit') }
+
+  unitless : SCALAR UNITLESS_UOM { return Unit.new(val[0], val[1]) }
 
   percent : SCALAR PERCENT { return Concentration.new(Mass.new(val[0] * 10, 'mg'), Volume.new(1, 'ml')) }
 
