@@ -8,7 +8,7 @@ macro
   VOLUME_UOM  \b(?:ml|l)\b
   UNIT_UOM    \b(?:unit|u)\b
   UNITLESS_UOM \b(?:ea)\b
-  EQUIVALENCE_UOM      \b(?:meq|eq)\b
+  EQUIVALENCE_UOM \b(?:meq|eq)\b
 rule
   {BLANK}
   {SCALAR}      { [:SCALAR, BigDecimal.new(text, 10)] }

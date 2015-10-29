@@ -15,6 +15,7 @@ rule
     volume |
     unit |
     unitless |
+    equivalence |
     percent
 
   concentration : mass SLASH volume { return Concentration.new(val[0], val[2]) }

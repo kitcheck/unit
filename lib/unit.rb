@@ -6,6 +6,7 @@ require "unit/unit"
 require "unit/mass"
 require "unit/volume"
 require "unit/concentration"
+require "unit/equivalence"
 require "unit/errors"
 require "bigdecimal"
 require 'strscan'
