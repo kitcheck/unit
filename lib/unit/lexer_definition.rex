@@ -7,7 +7,8 @@ macro
   MASS_UOM    \b(?:mcg|mg|g)\b
   VOLUME_UOM  \b(?:ml|l)\b
   UNIT_UOM    \b(?:unit|u)\b
-  UNITLESS_UOM \b(?:ea|meq)\b
+  UNITLESS_UOM \b(?:ea)\b
+  EQUIVALENCE_UOM      \b(?:meq|eq)\b
 rule
   {BLANK}
   {SCALAR}      { [:SCALAR, BigDecimal.new(text, 10)] }
@@ -24,6 +25,9 @@ rule
 
   #Unitless uom
   {UNITLESS_UOM} {[:UNITLESS_UOM, text] }
+
+  #Equivalence uom
+  {EQUIVALENCE_UOM} {[:EQUIVALENCE_UOM, text] }
 
   #Concentration
   \/            { [:SLASH, text] }
