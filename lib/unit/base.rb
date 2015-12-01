@@ -1,6 +1,7 @@
 module Unit
   class Base
     include Comparable
+    include Formatter
 
     attr_reader :scalar, :uom, :components
 
@@ -143,23 +144,5 @@ module Unit
     end
 
     #Display methods
-    def to_s
-      "#{@scalar.to_s("F")} #{@uom}"
-    end
-
-    def to_hash
-      {
-        :scalar => @scalar,
-        :uom => @uom,
-        :components => @components
-      }
-    end
-
-    def to_formatted_hash
-      to_hash.merge!({
-        :scalar_formatted => Formatter.scalar_formatted(@scalar),
-        :uom_formatted => Formatter.uom_formatted(@uom)
-      })
-    end
   end
 end
