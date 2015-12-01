@@ -1,12 +1,14 @@
 module Unit
   class Concentration
     include Comparable
+    include Formatter
 
-    attr_reader :numerator, :denominator, :scalar, :uom
+    attr_reader :numerator, :denominator, :scalar, :uom, :components
 
     def initialize(numerator, denominator)
       @numerator = numerator#Top of line
       @denominator = denominator #Bottom of line
+      @components = []
 
       if !(numerator.is_a?(Mass) || numerator.is_a?(Unit) || numerator.is_a?(Equivalence)) || !denominator.is_a?(Volume)
         raise IncompatibleUnitsError.new("The numerator must be a mass and the denominator must be a volume")
@@ -103,25 +105,6 @@ module Unit
 
     def unit?
       false
-    end
-
-    def to_s
-      "#{scalar.to_s("F")} #{uom}"
-    end
-
-    def to_hash
-      {
-        :scalar => scalar,
-        :uom => uom
-
-      }
-    end
-
-    def to_formatted_hash
-      to_hash.merge!({
-        :scalar_formatted => Formatter.scalar_formatted(scalar),
-        :uom_formatted => Formatter.uom_formatted(uom)
-      })
     end
 
     private
