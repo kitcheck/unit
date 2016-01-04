@@ -174,6 +174,13 @@ class MassTest < Minitest::Test
     end
   end
 
+  context "abs" do
+    should "return unit with abs scalar" do
+      a = Unit::Mass.new(-5, 'mg')
+      assert_equal Unit::Mass.new(5, 'mg'), a.abs
+    end
+  end
+
   context "conversion" do
     [
       ['1 mg', 'mcg', 1000],

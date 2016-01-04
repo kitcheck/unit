@@ -114,6 +114,10 @@ module Unit
     end
     alias_method :>>, :convert_to
 
+    def abs
+      self.class.new(self.scalar.abs, self.uom)
+    end
+
     def mass?
       Mass.scale_hash.keys.include? self.uom
     end
