@@ -62,6 +62,10 @@ module Unit
     end
     alias_method :>>, :convert_to
 
+    def abs
+      Concentration.new(numerator.abs, denominator.abs)
+    end
+
     def <=>(other)
       if self.class == other.class
         con1, con2 = Concentration.equivalise(self, other)

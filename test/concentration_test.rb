@@ -239,6 +239,18 @@ class ConcentrationTest < Minitest::Test
     end
   end
 
+  context "abs" do
+    setup do
+      num1 = Unit::Mass.new(-2, 'mg')
+      denom = Unit::Volume.new(1, 'ml')
+      @con = Unit::Concentration.new(num1, denom)
+    end
+
+    should "return a new concentration with abs scalar" do
+      assert_equal 2, @con.abs.scalar
+    end
+  end
+
   context "#equivalise" do
     [
       ['1 mcg/ml', '1 mg/ml', '1 mcg/ml', '1000 mcg/ml'],
