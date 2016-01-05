@@ -11,23 +11,17 @@ module Unit
     #We need to make sure we can't add different unitless objects together
 
     def +(other)
-      if self.uom != other.uom && other.is_a?(Unit)
-        raise IncompatibleUnitsError.new("You cannot add two different unitless units together")
-      end
+      check_compatibility("add", other)
       super(other)
     end
 
     def -(other)
-      if self.uom != other.uom && other.is_a?(Unit)
-        raise IncompatibleUnitsError.new("You cannot subtract two different unitless units together")
-      end
+      check_compatibility("subtract", other)
       super(other)
     end
 
     def /(other)
-      if self.uom != other.uom && other.is_a?(Unit)
-        raise IncompatibleUnitsError.new("You cannot divide two different unitless units together")
-      end
+      check_compatibility("divide", other)
       if other.is_a?(Volume)
         Concentration.new(self, other)
       else
@@ -36,15 +30,13 @@ module Unit
     end
 
     def <=>(other)
-      if self.uom != other.uom && other.is_a?(Unit)
-        raise IncompatibleUnitsError.new("You cannot compare two different unitless units together")
-      end
+      check_compatibility("compare", other)
       super(other)
     end
 
     def convert_to(uom)
       if self.uom != uom
-        raise IncompatibleUnitsError.new("You cannot compare two different unitless units together")
+        raise_incompatible_error("compare")
       end
       super(uom)
     end
@@ -52,9 +44,21 @@ module Unit
 
     def self.equivalise(u1, u2)
       if u1.uom != u2.uom && other.is_a?(Unit)
-        raise IncompatibleUnitsError.new("You cannot compare two different unitless units together")
+        raise_incompatible_error("compare")
       end
       super(u1, u2)
+    end
+
+    private
+
+    def check_compatibility(operation, other)
+      if self.uom != other.uom && other.is_a?(Unit)
+        raise_incompatible_error(operation)
+      end
+    end
+
+    def raise_incompatible_error(operation)
+      raise IncompatibleUnitsError.new("You cannot #{operation} two different unitless units together")
     end
   end
 end

@@ -31,13 +31,7 @@ module Unit
       if @uom == other.uom
         self.class.new((scalar + other.scalar), @uom, @components + other.components)
       else
-        if self < other
-          scaled_other = other.convert_to(self.uom)
-          self.class.new((@scalar + scaled_other.scalar), scaled_other.uom, @components + other.components)
-        else
-          scaled_self = self.convert_to(other.uom)
-          self.class.new((scaled_self.scalar + other.scalar), scaled_self.uom, @components + other.components)
-        end
+        use_operator_on_other(:+, other)
       end
     end
 
@@ -45,13 +39,7 @@ module Unit
       if @uom == other.uom
         self.class.new((@scalar - other.scalar), @uom, @components + other.components)
       else
-        if self < other
-          scaled_other = other.convert_to(self.uom)
-          self.class.new((@scalar - scaled_other.scalar), scaled_other.uom, @components + other.components)
-        else
-          scaled_self = self.convert_to(other.uom)
-          self.class.new((scaled_self.scalar - other.scalar), scaled_self.uom, @components + other.components)
-        end
+        use_operator_on_other(:-, other)
       end
     end
 
@@ -147,6 +135,16 @@ module Unit
       false
     end
 
-    #Display methods
+    private
+
+    def use_operator_on_other(operator, other)
+      if self < other
+        scaled_other = other.convert_to(self.uom)
+        self.class.new((@scalar.send(operator, scaled_other.scalar)), scaled_other.uom, @components + other.components)
+      else
+        scaled_self = self.convert_to(other.uom)
+        self.class.new((scaled_self.scalar.send(operator, other.scalar)), scaled_self.uom, @components + other.components)
+      end
+    end
   end
 end
