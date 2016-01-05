@@ -16,32 +16,11 @@ module Unit
     end
 
     def +(other)
-      if other.is_a? Concentration
-        #Add numerators
-        con1, con2 = Concentration.equivalise(self, other)
-        Concentration.new(con1.numerator + con2.numerator,
-                          con1.denominator #This is the same for both cons because of the equivalise method
-                         )
-      elsif other.is_a? Mass
-        Concentration.new(self.numerator + other, self.denominator)
-      elsif other.is_a? Volume
-        #Making the assumption that you're diluting
-        Concentration.new(self.numerator, self.denominator + other)
-      end
+      use_operator_on_other(:+, other)
     end
 
     def -(other)
-      if other.is_a? Concentration
-        con1, con2 = Concentration.equivalise(self, other)
-        Concentration.new(con1.numerator - con2.numerator,
-                          con1.denominator #This is the same for both cons because of the equivalise method
-                         )
-      elsif other.is_a? Mass
-        Concentration.new(self.numerator - other, self.denominator)
-      elsif other.is_a? Volume
-        #Making the assumption that you're diluting
-        Concentration.new(self.numerator, self.denominator - other)
-      end
+      use_operator_on_other(:-, other)
     end
 
     def /(other)
@@ -112,6 +91,21 @@ module Unit
     end
 
     private
+
+    def use_operator_on_other(operator, other)
+      if other.is_a? Concentration
+        #Add numerators
+        con1, con2 = Concentration.equivalise(self, other)
+        Concentration.new(con1.numerator.send(operator, con2.numerator),
+                          con1.denominator #This is the same for both cons because of the equivalise method
+                         )
+      elsif other.is_a? Mass
+        Concentration.new(self.numerator.send(operator, other), self.denominator)
+      elsif other.is_a? Volume
+        #Making the assumption that you're diluting
+        Concentration.new(self.numerator, self.denominator.send(operator, other))
+      end
+    end
 
     def self.equivalise(con1, con2)
       #if equivalent denoms, don't need to convert
