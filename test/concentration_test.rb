@@ -237,6 +237,12 @@ class ConcentrationTest < Minitest::Test
       assert_equal 2000, new_con.scalar
       assert_equal 'mcg/ml', new_con.uom
     end
+
+    should "convert to unit with scalar in denomatinor" do
+      new_con = @con >> 'mg/2ml'
+      assert_equal 1, new_con.scalar
+      assert_equal 'mg/ml', new_con.uom
+    end
   end
 
   context "abs" do
