@@ -37,7 +37,12 @@ module Unit
       if uoms.size  <= 1
         raise IncompatibleUnitsError
       end
-      Concentration.new(numerator.convert_to(uoms[0]), denominator.convert_to(uoms[1]))
+      tokens = Lexer.new.tokenize("1 #{uom}")
+      destination_conc = Parser.new.parse(tokens)
+      Concentration.new(
+        numerator.convert_to(destination_conc.numerator.uom).scale(destination_conc.scalar), 
+        denominator.convert_to(destination_conc.denominator.uom)
+      )
     end
     alias_method :>>, :convert_to
 
