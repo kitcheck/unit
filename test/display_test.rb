@@ -3,11 +3,12 @@ require 'test_helper'
 class DisplayTest < Minitest::Test
   context "#to_s" do
     [
-      [Unit.parse('5 mg'), "5.0 mg"],
-      [Unit.parse('5 ml'), "5.0 ml"],
-      [Unit.parse('5 unit'), "5.0 unit"],
-      [Unit.parse('5 mg/ml'), "5.0 mg/ml"],
-      [Unit.parse('5 meq'), "5.0 meq"]
+      [Unit.parse('5 mg'), "5 mg"],
+      [Unit.parse('5.5 mg'), "5.5 mg"],
+      [Unit.parse('5 ml'), "5 ml"],
+      [Unit.parse('5 unit'), "5 unit"],
+      [Unit.parse('5 mg/ml'), "5 mg/ml"],
+      [Unit.parse('5 meq'), "5 meq"]
     ].each do |unit, expected|
       should "translate a unit with scalar #{unit.scalar} and uom #{unit.uom} to #{expected}" do
         assert_equal unit.to_s, expected
