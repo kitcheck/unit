@@ -63,6 +63,9 @@ class Unit::Lexer < Racc::Parser
       when (text = @ss.scan(/[-+]?[0-9]*\.?[0-9]+/i))
          action { [:SCALAR, BigDecimal.new(text, 10)] }
 
+      when (text = @ss.scan(/[:]/i))
+         action { [:COLON, text] }
+
       when (text = @ss.scan(/\b(?:gm|gram)\b/i))
          action { [:MASS_UOM, 'g'] }
 
