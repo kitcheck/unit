@@ -1,7 +1,7 @@
 module Unit
   module Formatter
     def to_s
-      "#{scalar.to_s("F")} #{uom}"
+      "#{("%g" % scalar)} #{uom}"
     end
 
     def to_hash
