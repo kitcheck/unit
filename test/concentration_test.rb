@@ -183,6 +183,60 @@ class ConcentrationTest < Minitest::Test
     end
   end
 
+  context "multiplying" do
+    setup do
+      num1 = Unit::Mass.new(2, 'mg')
+      denom = Unit::Volume.new(1, 'ml')
+      @con = Unit::Concentration.new(num1, denom)
+    end
+
+    context "multiplying by a mass" do
+      should "raise a IncompatibleUnitsError" do
+        assert_raises Unit::IncompatibleUnitsError do
+          u1 = Unit::Mass.new(2, 'mg')
+          @con*u1
+        end
+      end
+    end
+
+    context "multiplying by an integer" do
+      should "create a scaled concentration" do
+        concentration = @con * 2
+
+        assert_equal true, concentration.is_a?(Unit::Concentration)
+        assert_equal 4, concentration.scalar
+        assert_equal "mg/ml", concentration.uom
+      end
+    end
+  end
+
+  context "dividing" do
+    setup do
+      num1 = Unit::Mass.new(2, 'mg')
+      denom = Unit::Volume.new(1, 'ml')
+      @con = Unit::Concentration.new(num1, denom)
+    end
+
+    context "dividing by a mass" do
+      should "raise a IncompatibleUnitsError" do
+        assert_raises Unit::IncompatibleUnitsError do
+          u1 = Unit::Mass.new(2, 'mg')
+          @con/u1
+        end
+      end
+    end
+
+    context "dividing by an integer" do
+      should "create a scaled concentration" do
+        concentration = @con / 2
+
+        assert_equal true, concentration.is_a?(Unit::Concentration)
+        assert_equal 1, concentration.scalar
+        assert_equal "mg/ml", concentration.uom
+      end
+    end
+  end
+
   context "#mass_from_volume" do
     setup do
       num1 = Unit::Mass.new(2, 'mg')
