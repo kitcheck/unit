@@ -63,16 +63,6 @@ class UnitTest < Minitest::Test
         assert_equal "unit/ml", conc.uom
       end
     end
-
-    context "multiplying by a scalar" do
-      should_eventually "scale the unit" do
-      end
-    end
-
-    context "dividing by a scalar" do
-      should_eventually "scale the unit" do
-      end
-    end
   end
 
   context "conversion" do

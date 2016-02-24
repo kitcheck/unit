@@ -35,7 +35,7 @@ module Unit
     end
 
     def /(other)
-      if other.try(:concentration?)
+      if other.respond_to?(:concentration?) && other.concentration?
         con1, con2 = Concentration.equivalise(self, other)
         con1.scalar / con2.scalar
       elsif other.is_a? Numeric
