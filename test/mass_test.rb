@@ -116,6 +116,61 @@ class MassTest < Minitest::Test
         assert_equal "mg/ml", conc.uom
       end
     end
+
+    context "dividing by an integer" do
+      should "create a scaled mass" do
+        u1 = Unit::Mass.new(4, 'mg')
+        mass = u1/2
+
+        assert_equal true, mass.is_a?(Unit::Mass)
+        assert_equal 2, mass.scalar
+        assert_equal "mg", mass.uom
+      end
+    end
+
+    context "dividing by a float" do
+      should "create a scaled mass" do
+        u1 = Unit::Mass.new(4, 'mg')
+        mass = u1/1.25
+
+        assert_equal true, mass.is_a?(Unit::Mass)
+        assert_equal 3.2, mass.scalar
+        assert_equal "mg", mass.uom
+      end
+    end
+
+    context "dividing by a unit" do
+      should "raise a IncompatibleUnitsError" do
+        assert_raises Unit::IncompatibleUnitsError do
+          u1 = Unit::Mass.new(4, 'mg')
+          u2 = Unit::Mass.new(4, 'unit')
+          u1/2
+        end
+      end
+    end
+  end
+
+  context "multiplying" do
+    context "multiplying by a mass" do
+      should "raise a IncompatibleUnitsError" do
+        assert_raises Unit::IncompatibleUnitsError do
+          u1 = Unit::Mass.new(4, 'mg')
+          u2 = Unit::Mass.new(4, 'mg')
+          u1*u2
+        end
+      end
+    end
+
+    context "multiplying by an integer" do
+      should "create a scaled mass" do
+        u1 = Unit::Mass.new(4, 'mg')
+        mass = u1 * 2
+
+        assert_equal true, mass.is_a?(Unit::Mass)
+        assert_equal 8, mass.scalar
+        assert_equal "mg", mass.uom
+      end
+    end
   end
 
   context "comparison" do

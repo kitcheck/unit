@@ -43,6 +43,14 @@ module Unit
       end
     end
 
+    def *(other)
+      if other.is_a?(Numeric)
+        self.scale(other)
+      else
+        raise IncompatibleUnitsError.new("These units are incompatible (#{self.to_s} and #{other.to_s})")
+      end
+    end
+
     def /(other)
       if other.is_a? self.class
         if @uom == other.uom
@@ -51,6 +59,8 @@ module Unit
           u1, u2 = self.class.equivalise(self, other)
           u1.scalar / u2.scalar
         end
+      elsif other.is_a?(Numeric)
+        self.scale(1.0/other)
       else
         raise "Implement in subclasses"
       end

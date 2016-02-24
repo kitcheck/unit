@@ -23,10 +23,26 @@ module Unit
       use_operator_on_other(:-, other)
     end
 
+    def *(other)
+      if other.is_a?(Numeric)
+        Concentration.new(
+          numerator * other,
+          denominator
+        )
+      else
+        raise IncompatibleUnitsError.new("These units are incompatible (#{self.to_s} and #{other.to_s})")
+      end
+    end
+
     def /(other)
-      if other.concentration?
+      if other.respond_to?(:concentration?) && other.concentration?
         con1, con2 = Concentration.equivalise(self, other)
         con1.scalar / con2.scalar
+      elsif other.is_a? Numeric
+        Concentration.new(
+          numerator / other,
+          denominator
+        )
       else
         raise IncompatibleUnitsError
       end
@@ -40,7 +56,7 @@ module Unit
       tokens = Lexer.new.tokenize("1 #{uom}")
       destination_conc = Parser.new.parse(tokens)
       Concentration.new(
-        numerator.convert_to(destination_conc.numerator.uom).scale(destination_conc.scalar), 
+        numerator.convert_to(destination_conc.numerator.uom).scale(destination_conc.scalar),
         denominator.convert_to(destination_conc.denominator.uom)
       )
     end

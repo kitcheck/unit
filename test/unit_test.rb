@@ -14,6 +14,41 @@ class UnitTest < Minitest::Test
         end
       end
     end
+
+    should "raise if trying to multiply two units" do
+      assert_raises Unit::IncompatibleUnitsError do
+        @u1 * @u2
+      end
+    end
+
+    should "raise if trying to divide two units" do
+      assert_raises Unit::IncompatibleUnitsError do
+        @u1 / @u2
+      end
+    end
+  end
+
+  context "multiplying" do
+    context "multiplying by a unit" do
+      should "raise a IncompatibleUnitsError" do
+        assert_raises Unit::IncompatibleUnitsError do
+          u1 = Unit::Unit.new(4, 'unit')
+          u2 = Unit::Unit.new(4, 'unit')
+          u1*u2
+        end
+      end
+    end
+
+    context "multiplying by an integer" do
+      should "create a scaled unit" do
+        u1 = Unit::Unit.new(4, 'unit')
+        unit = u1 * 2
+
+        assert_equal true, unit.is_a?(Unit::Unit)
+        assert_equal 8, unit.scalar
+        assert_equal "unit", unit.uom
+      end
+    end
   end
 
   context "division" do
