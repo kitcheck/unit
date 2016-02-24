@@ -30,12 +30,12 @@ module Unit
           denominator
         )
       else
-        raise IncompatibleUnitsError.new("These units are incompatible (#{self.uom} and #{other.uom})")
+        raise IncompatibleUnitsError.new("These units are incompatible (#{self.to_s} and #{other.to_s})")
       end
     end
 
     def /(other)
-      if other.respond_to?(:concentration?) && other.concentration?
+      if other.try(:concentration?)
         con1, con2 = Concentration.equivalise(self, other)
         con1.scalar / con2.scalar
       elsif other.is_a? Numeric

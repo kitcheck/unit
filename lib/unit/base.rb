@@ -47,7 +47,7 @@ module Unit
       if other.is_a?(Numeric)
         self.scale(other)
       else
-        raise IncompatibleUnitsError.new("These units are incompatible (#{self.uom} and #{other.uom})")
+        raise IncompatibleUnitsError.new("These units are incompatible (#{self.to_s} and #{other.to_s})")
       end
     end
 
