@@ -10,10 +10,13 @@ macro
   UNITLESS_UOM \b(?:ea)\b
   EQUIVALENCE_UOM \b(?:meq|eq)\b
   COLON       [:]
+  SEPERATOR [@]
+
 rule
   {BLANK}
   {SCALAR}      { [:SCALAR, BigDecimal.new(text, 10)] }
   {COLON}       { [:COLON, text] }
+  {SEPERATOR}   { [:SEPERATOR, text] }
 
   #Mass
   \b(?:gm|gram)\b    { [:MASS_UOM, 'g'] }

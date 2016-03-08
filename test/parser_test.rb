@@ -107,5 +107,15 @@ class ParserTest < Minitest::Test
         assert_equal "mg/ml", conc.uom
       end
     end
+
+    context "mixed solution" do
+      should "parse a mixed solution" do
+        conc = Unit.parse('1%-1:1000')
+
+        assert_equal true, conc.concentration?
+        assert_equal 11, conc.scalar
+        assert_equal "mg/ml", conc.uom
+      end
+    end
   end
 end
