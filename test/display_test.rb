@@ -44,4 +44,14 @@ class DisplayTest < Minitest::Test
     end
 
   end
+
+  context "#inspect" do
+    setup do
+      @sut = Unit.parse('5 mg')
+    end
+
+    should 'look ok' do
+      assert_equal '5 mg', @sut.inspect
+    end
+  end
 end
