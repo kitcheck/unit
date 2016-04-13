@@ -145,6 +145,10 @@ module Unit
       false
     end
 
+    def inspect
+      "#{@scalar.to_f} #{@uom}"
+    end
+
     private
 
     def use_operator_on_other(operator, other)
