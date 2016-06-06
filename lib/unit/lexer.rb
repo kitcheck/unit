@@ -81,8 +81,8 @@ class Unit::Lexer < Racc::Parser
       when (text = @ss.scan(/\b(?:unit|u)\b/i))
          action { [:UNIT_UOM, text] }
 
-      when (text = @ss.scan(/\b(?:ea)\b/i))
-         action {[:UNITLESS_UOM, text] }
+      when (text = @ss.scan(/\b(?:each|ea)\b/i))
+         action {[:UNITLESS_UOM, 'ea'] }
 
       when (text = @ss.scan(/\b(?:meq|eq)\b/i))
          action {[:EQUIVALENCE_UOM, text] }

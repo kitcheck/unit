@@ -7,7 +7,7 @@ macro
   MASS_UOM    \b(?:mcg|mg|g)\b
   VOLUME_UOM  \b(?:ml|l)\b
   UNIT_UOM    \b(?:unit|u)\b
-  UNITLESS_UOM \b(?:ea)\b
+  UNITLESS_UOM \b(?:each|ea)\b
   EQUIVALENCE_UOM \b(?:meq|eq)\b
   COLON       [:]
   SEPERATOR [@]
@@ -29,7 +29,7 @@ rule
   {UNIT_UOM}    { [:UNIT_UOM, text] }
 
   #Unitless uom
-  {UNITLESS_UOM} {[:UNITLESS_UOM, text] }
+  {UNITLESS_UOM} {[:UNITLESS_UOM, 'ea'] }
 
   #Equivalence uom
   {EQUIVALENCE_UOM} {[:EQUIVALENCE_UOM, text] }
