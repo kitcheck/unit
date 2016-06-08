@@ -117,5 +117,17 @@ class ParserTest < Minitest::Test
         assert_equal "mg/ml", conc.uom
       end
     end
+
+    context "unitless" do
+      should "parse a unitless object" do
+        ['1 ea', '1 each'].each do |str|
+          unit = Unit.parse(str)
+
+          assert_equal true, unit.unit?
+          assert_equal 1, unit.scalar
+          assert_equal 'ea', unit.uom
+        end
+      end
+    end
   end
 end
