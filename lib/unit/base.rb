@@ -146,7 +146,7 @@ module Unit
     end
 
     def inspect
-      "#{@scalar.to_f} #{@uom}"
+      to_s
     end
 
     private
