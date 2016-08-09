@@ -1,0 +1,5 @@
+steps:
+  - name: 'Unit Test :boom:'
+    command: bundle exec rake test
+    env:
+      BUILDKITE_DOCKER: true
