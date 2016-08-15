@@ -144,7 +144,7 @@ class MassTest < Minitest::Test
         assert_raises Unit::IncompatibleUnitsError do
           u1 = Unit::Mass.new(4, 'mg')
           u2 = Unit::Mass.new(4, 'unit')
-          u1/2
+          u1/u2
         end
       end
     end
